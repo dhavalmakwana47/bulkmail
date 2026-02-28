@@ -92,15 +92,15 @@ class UserController extends Controller
 
             // If the email is sent successfully, log the action
             $logData['action'] = "New user '{$request->name}' email password mail sent";
-            addUserAction($logData);
+            // addUserAction($logData);
         } catch (\Exception $e) {
             // If there is an error, log that the email was not sent
             $logData['action'] = "Failed to send email to '{$request->email}': " . $e->getMessage();
-            addUserAction($logData);
+            // addUserAction($logData);
         };
 
         $logData['action'] = "New user '{$request->name}' has been created";
-        addUserAction($logData);
+        // addUserAction($logData);
 
 
         return redirect()->route('users.index')->with('status', 'User created successfully');;
@@ -154,12 +154,12 @@ class UserController extends Controller
 
         if ($request->email != $userData->email) {
             $logData['action'] = "The email for user '{$userData->email}' has been updated to '{$request->email}'.";
-            addUserAction($logData);
+            // addUserAction($logData);
         }
 
 
         $logData['action'] = "The profile of '{$userData->name}' has been updated.";
-        addUserAction($logData);
+        // addUserAction($logData);
         $userData->update($updateArr);
 
 

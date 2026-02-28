@@ -79,7 +79,7 @@ class LoginController extends Controller
                 $logData['user_id'] = $user->id;
                 $logData['resolution_id'] = 0;
                 $logData['action'] = "User '{$user->name}' (ID: {$user->id}) has logged in.";
-                addUserAction($logData);
+                // addUserAction($logData);
                 return true; // User is active, proceed with login
             } else {
                 Auth::logout(); // Log out the user if not active

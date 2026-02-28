@@ -28,7 +28,7 @@
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <style>
-        .error{
+        .error {
             color: red;
         }
     </style>
@@ -47,13 +47,14 @@
   </div> --}}
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-primary">
             <!-- Brand Logo -->
-            <a href="" class="brand-link">
-                <img src="{{ asset('homepage/assets/img/logo.png') }}" alt="AdminLTE Logo"
-                    class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">India E-Voting</span>
-            </a>
+<a href="" class="brand-link text-center ">
+    <img src="{{ asset('homepage/assets/img/logo2.png') }}"
+         alt="Logo"
+         class="img-fluid"
+         style="max-height: 65px; width: 75%;">
+</a>
 
             <!-- Sidebar -->
             <div class="sidebar">
@@ -82,7 +83,8 @@
                     <nav class="navbar navbar-expand navbar-white ">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
+                                        class="fas fa-bars"></i></a>
                             </li>
                         </ul>
                     </nav>
@@ -101,26 +103,26 @@
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">
-           <strong>© 2024 India E-Voting. </strong>
+            <strong>© 2024 India E-Voting. </strong>
             All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
-                <ul class="list-inline footer-links"> 
-                        <li class="list-inline-item"> 
-                            <a href="{{ route('policy') }}" class=""> 
-                                Privacy Policy 
-                            </a> 
-                        </li> 
-                        <li class="list-inline-item"> 
-                            <a href="{{ route('policy') }}" class=""> 
-                                Terms of Service 
-                            </a> 
-                        </li> 
-                        {{-- <li class="list-inline-item"> 
+                <ul class="list-inline footer-links">
+                    <li class="list-inline-item">
+                        <a href="{{ route('policy') }}" class="">
+                            Privacy Policy
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="{{ route('policy') }}" class="">
+                            Terms of Service
+                        </a>
+                    </li>
+                    {{-- <li class="list-inline-item"> 
                             <a href="#" class=""> 
                                 Sitemap 
                             </a> 
                         </li>  --}}
-                    </ul> 
+                </ul>
             </div>
         </footer>
 
