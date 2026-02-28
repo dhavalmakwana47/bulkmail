@@ -1,0 +1,14 @@
+[2026-02-28 13:44:06] local.ERROR: include(C:\Dhaval\My Projects\Bulkmail\vendor\composer/../../app/Console/Commands/sendFinalReportCron.php): Failed to open stream: No such file or directory {"exception":"[object] (ErrorException(code: 0): include(C:\\Dhaval\\My Projects\\Bulkmail\\vendor\\composer/../../app/Console/Commands/sendFinalReportCron.php): Failed to open stream: No such file or directory at C:\\Dhaval\\My Projects\\Bulkmail\\vendor\\composer\\ClassLoader.php:576)
+[stacktrace]
+#0 C:\\Dhaval\\My Projects\\Bulkmail\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(255): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'include(C:\\\\Dhav...', 'C:\\\\Dhaval\\\\My Pr...', 576)
+#1 C:\\Dhaval\\My Projects\\Bulkmail\\vendor\\composer\\ClassLoader.php(576): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}(2, 'include(C:\\\\Dhav...', 'C:\\\\Dhaval\\\\My Pr...', 576)
+#2 C:\\Dhaval\\My Projects\\Bulkmail\\vendor\\composer\\ClassLoader.php(576): include('C:\\\\Dhaval\\\\My Pr...')
+#3 C:\\Dhaval\\My Projects\\Bulkmail\\vendor\\composer\\ClassLoader.php(427): Composer\\Autoload\\{closure}('C:\\\\Dhaval\\\\My Pr...')
+#4 [internal function]: Composer\\Autoload\\ClassLoader->loadClass('App\\\\Console\\\\Com...')
+#5 C:\\Dhaval\\My Projects\\Bulkmail\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(239): is_subclass_of('App\\\\Console\\\\Com...', 'Symfony\\\\Compone...')
+#6 C:\\Dhaval\\My Projects\\Bulkmail\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(263): Illuminate\\Console\\Application->resolve('App\\\\Console\\\\Com...')
+#7 C:\\Dhaval\\My Projects\\Bulkmail\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(482): Illuminate\\Console\\Application->resolveCommands(Array)
+#8 C:\\Dhaval\\My Projects\\Bulkmail\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(201): Illuminate\\Foundation\\Console\\Kernel->getArtisan()
+#9 Command line code(1): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 {main}
+"} 
