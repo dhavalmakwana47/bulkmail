@@ -7,15 +7,50 @@
         <p>Dashboard</p>
       </a>
     </li>
+    
+    <!-- Bulk Mail System -->
+    <li class="nav-header">BULK MAIL</li>
+    
     @if (permissionCheck())
     <li class="nav-item">
-      <a href="{{ route('users.index') }}" class="nav-link {{ Request::routeIs('users.index') ? 'active' : '' }}">
-        <i class="nav-icon fas fa-users"></i>
-        <p>Users</p>
+      <a href="{{ route('corporate-debtors.index') }}" class="nav-link {{ Request::routeIs('corporate-debtors.*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-building"></i>
+        <p>Corporate Debtors</p>
       </a>
     </li>
     @endif
     
+    <li class="nav-item">
+      <a href="{{ route('contacts.index') }}" class="nav-link {{ Request::routeIs('contacts.*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-address-book"></i>
+        <p>Contacts</p>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a href="{{ route('mail-configurations.index') }}" class="nav-link {{ Request::routeIs('mail-configurations.*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-envelope"></i>
+        <p>Mail Configurations</p>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a href="{{ route('debtor-attachments.index') }}" class="nav-link {{ Request::routeIs('debtor-attachments.*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-paperclip"></i>
+        <p>Attachments</p>
+      </a>
+    </li>
+
+    <li class="nav-header">SYSTEM</li>
+
+    <li class="nav-item">
+      <a href="{{ route('activity-logs.index') }}" class="nav-link {{ Request::routeIs('activity-logs.*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-history"></i>
+        <p>Activity Logs</p>
+      </a>
+    </li>
+
+    <li class="nav-header">ACCOUNT</li>
 
     <li class="nav-item">
       <a href="{{ route('userpassword.change') }}" class="nav-link {{ Request::routeIs('userpassword.change') ? 'active' : '' }}">

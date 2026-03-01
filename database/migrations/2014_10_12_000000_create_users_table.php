@@ -18,12 +18,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('phone');
-            $table->string('pan_number');
             $table->boolean('is_active')->default(0);
-            $table->enum('type',[0,1,2])->comment('0 = "Super Admin", 1 = "Authorized Person"')->default(1);
-            $table->enum('user_type',[1,2])->comment('1 = "Authorized Person", 2 = "Scrutinizer"');
+            $table->enum('type',[0,1,2])->comment('0 = "Super Admin", 1 = "Corporate Debtor"')->default(1);
             $table->string('password');
+            $table->boolean('duplicate_email')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
@@ -33,8 +31,6 @@ return new class extends Migration
             'email' => 'admin@gmail.com',
             'password' => Hash::make(123456),
             'type' => "0",
-            'phone' => "",
-            'pan_number' => "",
             'is_active' => 1
         ]);
     }

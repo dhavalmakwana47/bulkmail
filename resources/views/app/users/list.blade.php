@@ -1,6 +1,6 @@
 @extends('app.layout.app')
 @section('page_title')
-    User List
+    Corporate Debtors
 @endsection
 @section('header-script')
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -12,10 +12,10 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title" style="font-size: 21px;">User List</h3>
+                    <h3 class="card-title" style="font-size: 21px;">Corporate Debtors</h3>
 
                     {{-- Data insert button with check permission --}}
-                    <a href="{{ route('users.create') }}" class="btn btn-primary float-right nav-link">Add User</a>
+                    <a href="{{ route('corporate-debtors.create') }}" class="btn btn-primary float-right nav-link">Add Corporate Debtor</a>
                 </div>
 
                 {{-- Datatable --}}
@@ -27,11 +27,6 @@
                                     <th>#</th>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>Password</th>
-                                    <th>Phone</th>
-                                    <th>PAN</th>
-                                    <th>Type</th>
-                                    <th>Is Active</th>
                                     <th>Created Date</th>
                                     <th>Action</th>
                                 </tr>
@@ -50,7 +45,7 @@
             processing: true,
             serverSide: true,
             "pageLength": 10,
-            ajax: "{{ route('users.index') }}",
+            ajax: "{{ route('corporate-debtors.index') }}",
             "order": [[0, "desc"]],
             columns: [{
                     data: 'id',
@@ -64,28 +59,6 @@
                     data: 'email',
                     name: 'email'
                 },
-                {
-                    data: 'password_view',
-                    name: 'password_view'
-                },
-                {
-                    data: 'phone',
-                    name: 'phone'
-                },
-                {
-                    data: 'pan_number',
-                    name: 'pan_number'
-                },
-                {
-                    data: 'type',
-                    name: 'type'
-                },
-                {
-                    data: 'is_active',
-                    name: 'is_active'
-                },
-
-    
                 {
                     data: 'created_at',
                     name: 'created_at'
@@ -109,7 +82,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: "{{ route('users.changestatus') }}",
+                url: "{{ route('corporate-debtors.changestatus') }}",
                 data: {
                     id: id,
                     "_token": token,
@@ -134,7 +107,7 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    var url = "{{  route('users.index') }}"+"/"+ id; 
+                    var url = "{{  route('corporate-debtors.index') }}"+"/"+ id; 
                     $.ajax({
                         type: 'DELETE',
                         url: url,

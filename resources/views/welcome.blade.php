@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>India E-Voting - Empowering Creditor Participation in Insolvency Proceedings</title>
+    <title>BulkMail - Professional Email Marketing & Communication Platform</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -84,7 +84,6 @@
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
 
-            <a class="btn-getstarted" href="">Voter Login</a> 
 
         </div>
     </header>
@@ -98,8 +97,8 @@
             </div>
             <div class="container text-center">
                 <div class="d-flex flex-column justify-content-center align-items-center">
-                    <h1 data-aos="fade-up" class="">Welcome to <span>E-Voting</span></h1>
-                    <p data-aos="fade-up" data-aos-delay="100" class="">Empowering Creditor Participation in Insolvency Proceedings<br></p>
+                    <h1 data-aos="fade-up" class="">Welcome to <span>BulkMail</span></h1>
+                    <p data-aos="fade-up" data-aos-delay="100" class="">Professional Email Marketing & Bulk Communication Platform<br></p>
                     <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
                         <a href="#about" class="btn-get-started">Get Started</a>
                         <!-- <a href="#"
@@ -122,10 +121,10 @@
 
                     <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="100">
                         <div class="service-item d-flex">
-                            <div class="icon flex-shrink-0"><i class="bi bi-briefcase"></i></div>
+                            <div class="icon flex-shrink-0"><i class="bi bi-envelope"></i></div>
                             <div>
-                                <h4 class="title"><a href="#" class="stretched-link">IBC E-Voting</a></h4>
-                                <p class="description">We're committed to facilitating transparent and efficient resolution processes under the Insolvency and Bankruptcy Code.</p>
+                                <h4 class="title"><a href="#" class="stretched-link">Bulk Email Sending</a></h4>
+                                <p class="description">Send thousands of personalized emails to your contacts with advanced template customization and tracking.</p>
                             </div>
                         </div>
                     </div>
@@ -133,21 +132,21 @@
 
                     <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="200">
                         <div class="service-item d-flex">
-                            <div class="icon flex-shrink-0"><i class="bi bi-card-checklist"></i></div>
+                            <div class="icon flex-shrink-0"><i class="bi bi-people"></i></div>
                             <div>
-                                <h4 class="title"><a href="#" class="stretched-link">Club E-Voting</a></h4>
-                                <p class="description">We believe in the power of democracy at every level, including within clubs and organizations.</p>
+                                <h4 class="title"><a href="#" class="stretched-link">Contact Management</a></h4>
+                                <p class="description">Organize and manage your contacts efficiently with import/export capabilities and custom attributes.</p>
                             </div>
                         </div>
                     </div><!-- End Service Item -->
 
                     <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="300">
                         <div class="service-item d-flex">
-                            <div class="icon flex-shrink-0"><i class="bi bi-bar-chart"></i></div>
+                            <div class="icon flex-shrink-0"><i class="bi bi-graph-up"></i></div>
                             <div>
-                                <h4 class="title"><a href="#" class="stretched-link">Society E-Voting</a>
+                                <h4 class="title"><a href="#" class="stretched-link">Email Analytics</a>
                                 </h4>
-                                <p class="description">Society E-Voting is your gateway to democratic participation in the digital age.</p>
+                                <p class="description">Track email delivery, opens, and engagement with comprehensive reporting and analytics.</p>
                             </div>
                         </div>
                     </div><!-- End Service Item -->
@@ -162,26 +161,26 @@
         <section id="about" class="about section">
     <div class="container">
         <p class="who-we-are"><Center><b><h1><u>Who We Are</u></h1> </b></Center></p>
-        <h3>India E-Voting – Redefining Digital Democracy Through Innovation</h3>
+        <h3>BulkMail – Revolutionizing Email Communication</h3>
 
         <p class="fst-italic">
-            At India E-Voting, we harness the power of advanced technology to deliver secure, transparent, and reliable electronic voting solutions. Our mission is to empower organizations, institutions, and communities by making decision-making processes more accessible and efficient.
+            At BulkMail, we leverage cutting-edge technology to deliver powerful, reliable, and scalable email marketing solutions. Our mission is to empower businesses and organizations to communicate effectively with their audiences through personalized bulk email campaigns.
         </p>
 
         <p class="fst-italic">
-            Founded with a vision to modernize democratic participation, we have evolved into a trusted technology partner for e-voting solutions across diverse sectors. Our platform is designed to ensure integrity, accuracy, and confidence in every vote cast.
+            Founded with a vision to simplify mass communication, we have evolved into a trusted platform for email marketing across diverse industries. Our system is designed to ensure high deliverability, security, and comprehensive tracking of every email sent.
         </p>
 
         <p class="fst-italic">
-            What truly sets us apart is our commitment to excellence and user trust. We work closely with our clients to understand their unique requirements and deliver customized, compliant, and scalable e-voting systems that exceed expectations.
+            What truly sets us apart is our commitment to user experience and results. We provide intuitive tools for contact management, template customization, and real-time analytics that help you understand and improve your email campaigns.
         </p>
 
         <p class="fst-italic">
-            Our comprehensive offerings include secure e-voting platforms, system integration, data protection, and technical support—built to meet the highest standards of reliability and regulatory compliance.
+            Our comprehensive offerings include bulk email sending, contact management, attachment handling, email tracking, and detailed reporting—built to meet the highest standards of deliverability and compliance.
         </p>
 
         <p class="fst-italic">
-            At India E-Voting, we are more than a technology provider—we are a catalyst for transparent governance and digital transformation. Join us as we shape the future of voting with innovation, integrity, and trust.
+            At BulkMail, we are more than an email service—we are your partner in building meaningful connections with your audience. Join us as we transform the way you communicate with innovation, reliability, and trust.
         </p>
     </div>
 </section>
@@ -192,8 +191,8 @@
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
-                <h2 class="">Type's Of E-Votign</h2>
-                <p>Trust and confidentiality are paramount in insolvency proceedings.</p>
+                <h2 class="">Key Features</h2>
+                <p>Powerful tools to manage and execute your email campaigns effectively.</p>
             </div>
 
             <div class="container">
@@ -202,9 +201,9 @@
 
                     <div class="col-lg-5 d-flex align-items-center" data-aos="fade-up" data-aos-delay="200">
                         <div class="content">
-                             <h3>Welcome to IBC E-Vote: Empowering Creditor Participation in Insolvency Proceedings</h3>
+                             <h3>Personalized Email Templates</h3>
                             <p>
-                                At IBC EVote, we're committed to facilitating transparent and efficient resolution processes under the Insolvency and Bankruptcy Code. Our electronic voting platform empowers creditors to participate in crucial decision-making, ensuring their voices are heard and their interests are protected throughout insolvency proceedings.
+                                Create dynamic email templates with custom tags like @{{name}}, @{{email}}, and custom attributes. Our system automatically personalizes each email for every recipient, making your communication more engaging and effective.
                             </p>
                             
                         </div>
@@ -214,9 +213,9 @@
                         data-aos-delay="100">
 
                         <div class="content">
-                            <h3>Welcome to Society eVoting: Where Your Voice Shapes Our Future</h3>
+                            <h3>Advanced Contact Management</h3>
                             <p>
-                                Society eVoting is your gateway to democratic participation in the digital age. We're committed to empowering citizens like you to make informed decisions and have a direct impact on the issues that matter most to our society. With our secure and user-friendly electronic voting platform, you can exercise your right to vote conveniently and confidently from anywhere in the world.
+                                Import contacts in bulk, organize them with custom attributes, and segment your audience for targeted campaigns. Our intuitive interface makes managing thousands of contacts simple and efficient.
                             </p>
                             
                         </div>
@@ -224,9 +223,9 @@
                         
                          <div class="col-lg-5 d-flex align-items-center" data-aos="fade-up" data-aos-delay="200">
                         <div class="content">
-                             <h3>Welcome to Company Law E-Voting: Simplifying Corporate Governance</h3>
+                             <h3>Attachment Management</h3>
                             <p>
-                                At Company Law E-Voting, we understand the importance of corporate governance and shareholder participation in decision-making processes. Our advanced electronic voting platform is designed to streamline the voting process for shareholders, ensuring transparency, efficiency, and compliance with company law regulations.
+                                Easily attach files to your email campaigns and generate downloadable attachment lists. Perfect for sending documents, reports, or resources to your contacts with secure download links.
                             </p>
                         </div>
                     </div>
@@ -234,9 +233,9 @@
                         data-aos-delay="100">
 
                         <div class="content">
-                            <h3>Welcome to University E-Vote: Your Voice, Your Choice</h3>
+                            <h3>Real-Time Email Tracking</h3>
                             <p>
-                                At University E-Vote, we believe in empowering students to actively participate in the democratic process of their academic community. Our secure and user-friendly e-voting platform is designed to make it easy for you to cast your vote and have your say in important university decisions.
+                                Monitor the status of every email sent with detailed logs. Track delivery, failures, and engagement metrics to optimize your campaigns and improve deliverability rates.
                             </p>
                             
                         </div>
@@ -245,9 +244,9 @@
 
               <div class="col-lg-5 d-flex align-items-center" data-aos="fade-up" data-aos-delay="200">
                         <div class="content">
-                             <h3>Welcome to NGO E-Vote: Empowering Change Through Digital Democracy</h3>
+                             <h3>Multiple SMTP Connections</h3>
                             <p>
-                                NGOeVote is more than just a platform; it's a movement towards a more inclusive and participatory society. Our mission is to empower individuals and communities to have a direct say in the decisions that affect them most. With our secure and accessible eVoting platform, we're bridging the gap between citizens and their voices, fostering transparency, and driving positive change.
+                                Configure multiple SMTP connections and let our system automatically distribute emails across them for better deliverability and load balancing. Supports AWS SES and other SMTP providers.
                             </p>
                             
                         </div>
@@ -257,9 +256,9 @@
                         data-aos-delay="100">
 
                         <div class="content">
-                            <h3>Welcome to Club E-Vote: Your Platform for Inclusive Decision-Making</h3>
+                            <h3>Comprehensive Reporting</h3>
                             <p>
-                               At Club EVote, we believe in the power of democracy at every level, including within clubs and organizations. Our platform is designed to facilitate fair, secure, and efficient electronic voting processes, enabling members to participate in decision-making with ease and transparency.
+                               Get detailed reports on your email campaigns including total sent, failed, and delivery statistics. Resend failed emails with a single click and maintain complete activity logs.
                             </p>
                            
                         </div>
@@ -287,7 +286,7 @@
                      data-aos="fade-up" data-aos-delay="200">
                     <i class="bi bi-envelope-open"></i>
                     <h3>Official Email</h3>
-                    <p><a href="mailto:info@indiaevoting.com">info@indiaevoting.com</a></p>
+                    <p><a href="mailto:info@bulkmail.com">info@bulkmail.com</a></p>
                 </div>
             </div>
 
@@ -305,7 +304,7 @@
                      data-aos="fade-up" data-aos-delay="400">
                     <i class="bi bi-envelope-at"></i>
                     <h3>Support Email</h3>
-                    <p><a href="mailto:indiaevoting024@gmail.com">indiaevoting024@gmail.com</a></p>
+                    <p><a href="mailto:support@bulkmail.com">support@bulkmail.com</a></p>
                 </div>
             </div>
 
@@ -318,9 +317,8 @@
 
     <footer id="footer" class="">
         <div class="container copyright text-center mt-1">
-            <p>©2024<span> Copyright</span><strong class="px-2 sitename">India E-voting</strong>
+            <p>©2024<span> Copyright</span><strong class="px-2 sitename">BulkMail</strong>
             <span>All Rights Reserved</span>
-            <strong class="px-1 sitename">Apexrise Consultant and E-Service</strong>
             </p>
             </div>
     </footer>
