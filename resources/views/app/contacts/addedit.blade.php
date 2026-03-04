@@ -43,11 +43,10 @@
                             <input type="text" name="phone" class="form-control" value="{{ old('phone', $contact->phone ?? '') }}">
                         </div>
                         <div class="form-group">
-                            <label>Type</label>
+                            <label>Subscription Status</label>
                             <select name="type" class="form-control" required>
-                                <option value="">Select Type</option>
-                                <option value="MEMBER" {{ old('type', isset($contact) ? (is_string($contact->type) ? $contact->type : $contact->type->value) : '') == 'MEMBER' ? 'selected' : '' }}>MEMBER</option>
-                                <option value="OTHER" {{ old('type', isset($contact) ? (is_string($contact->type) ? $contact->type : $contact->type->value) : '') == 'OTHER' ? 'selected' : '' }}>OTHER</option>
+                                <option value="SUBSCRIBED" {{ old('type', isset($contact) ? (is_string($contact->type) ? $contact->type : $contact->type->value) : 'SUBSCRIBED') == 'SUBSCRIBED' ? 'selected' : '' }}>Subscribed</option>
+                                <option value="UNSUBSCRIBED" {{ old('type', isset($contact) ? (is_string($contact->type) ? $contact->type : $contact->type->value) : '') == 'UNSUBSCRIBED' ? 'selected' : '' }}>Unsubscribed</option>
                             </select>
                         </div>
                         <div class="form-group">

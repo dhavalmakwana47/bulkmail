@@ -190,6 +190,14 @@
                             log_id: logId,
                             _token: "{{ csrf_token() }}"
                         },
+                        beforeSend: function() {
+                            Swal.fire({
+                                title: 'Sending...',
+                                text: 'Please wait while we resend the email',
+                                allowOutsideClick: false,
+                                didOpen: () => { Swal.showLoading(); }
+                            });
+                        },
                         success: function(response) {
                             Swal.fire('Success!', response.message, 'success');
                             $('#recipient_logs').DataTable().ajax.reload();

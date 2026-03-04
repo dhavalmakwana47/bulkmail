@@ -142,6 +142,28 @@
             },
             submitHandler: function(form) {
                 $('#bodyEditor').val($('#bodyEditor').summernote('code'));
+                
+                var selectedAttachments = $('#attachmentsSelect').val();
+                var bodyContent = $('#bodyEditor').summernote('code');
+                
+                if (selectedAttachments && selectedAttachments.length > 0) {
+                    if (bodyContent.indexOf('@{{attachment_list}}') === -1) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Missing Tag',
+                            text: 'You have selected attachments but the @{{attachment_list}} tag is missing in the email body. Attachments will not be displayed to recipients.',
+                            showCancelButton: true,
+                            confirmButtonText: 'Continue Anyway',
+                            cancelButtonText: 'Go Back'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                form.submit();
+                            }
+                        });
+                        return false;
+                    }
+                }
+                
                 form.submit();
             }
         });

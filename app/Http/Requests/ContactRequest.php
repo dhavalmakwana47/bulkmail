@@ -18,7 +18,7 @@ class ContactRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:20',
-            'type' => 'required|in:BIDDER,MEMBER,OTHER',
+            'type' => 'required|in:SUBSCRIBED,UNSUBSCRIBED',
             'attributes' => 'nullable|array',
         ];
     }

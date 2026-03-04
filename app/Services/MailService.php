@@ -9,6 +9,7 @@ use App\Models\DebtorAttachment;
 use App\Models\MailConfiguration;
 use App\Models\MailRecipientLog;
 use App\Models\SesConnection;
+use App\Services\SubscriptionService;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Config;
@@ -27,7 +28,9 @@ class MailService
 
         $this->configureSes($sesConnection);
         
-        $contacts = Contact::where('user_id', $mailConfig->user_id)->get();
+        $contacts = Contact::where('user_id', $mailConfig->user_id)
+            ->subscribed()
+            ->get();
         $attachments = $mailConfig->configurationAttachments()->with('debtorAttachment')->get();
         
         $totalSent = 0;
@@ -36,6 +39,7 @@ class MailService
         foreach ($contacts as $contact) {
             try {
                 $body = $this->replaceTagsInBody($mailConfig->body, $contact, $attachments);
+                $body = $this->appendUnsubscribeFooter($body, $contact);
                 
                 $sentMessage = Mail::html($body, function ($message) use ($mailConfig, $contact, $sesConnection) {
                     $message->from($sesConnection->from_email, $mailConfig->from_name)
@@ -138,6 +142,18 @@ class MailService
         return $html;
     }
 
+    private function appendUnsubscribeFooter(string $body, Contact $contact): string
+    {
+        $subscriptionService = app(SubscriptionService::class);
+        $unsubscribeUrl = $subscriptionService->generateUnsubscribeUrl($contact);
+        
+        $footer = view('emails.partials.unsubscribe-footer', [
+            'unsubscribeUrl' => $unsubscribeUrl
+        ])->render();
+        
+        return $body . $footer;
+    }
+
     public function resendMail(MailRecipientLog $log)
     {
         $sesConnection = SesConnection::active()->inRandomOrder()->first();
@@ -149,10 +165,22 @@ class MailService
         $this->configureSes($sesConnection);
         
         $mailConfig = $log->mailConfiguration;
-        $contact = $log->contact;
+        $contact = $log->contact()->first();
+        
+        if (!$contact) {
+            throw new \Exception('Contact not found');
+        }
+        
+        $contactType = is_string($contact->type) ? $contact->type : $contact->type->value;
+        
+        if ($contactType !== 'SUBSCRIBED') {
+            throw new \Exception('Cannot send email to unsubscribed contact');
+        }
+        
         $attachments = $mailConfig->configurationAttachments()->with('debtorAttachment')->get();
         
         $body = $this->replaceTagsInBody($mailConfig->body, $contact, $attachments);
+        $body = $this->appendUnsubscribeFooter($body, $contact);
         
         $sentMessage = Mail::html($body, function ($message) use ($mailConfig, $contact, $sesConnection) {
             $message->from($sesConnection->from_email, $mailConfig->from_name)

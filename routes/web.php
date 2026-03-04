@@ -27,6 +27,12 @@ use Illuminate\Support\Facades\Artisan;
 Route::get('/', fn() => view('welcome'))->name('index');
 Route::get('/policy', fn() => view('policy'))->name('policy');
 
+// Unsubscribe Route (Public, Rate Limited)
+Route::get('/unsubscribe/{token}', [App\Http\Controllers\UnsubscribeController::class, 'unsubscribe'])
+    ->name('unsubscribe')
+    ->middleware('throttle:10,1');
+Route::get('debtor-attachments/download/{id}', [DebtorAttachmentController::class, 'download'])->name('debtor-attachments.download');
+
 // Authenticated Routes
 Route::middleware(['auth', 'userstatus'])->group(function () {
 
@@ -60,7 +66,6 @@ Route::middleware(['auth', 'userstatus'])->group(function () {
 
         // Debtor Attachments
         Route::resource('debtor-attachments', DebtorAttachmentController::class);
-        Route::get('debtor-attachments/download/{id}', [DebtorAttachmentController::class, 'download'])->name('debtor-attachments.download');
         Route::get('debtor-attachments-by-debtor', [DebtorAttachmentController::class, 'getByDebtor'])->name('debtor-attachments.by-debtor');
 
         // Activity Logs

@@ -177,10 +177,10 @@ class ContactController extends Controller
 
     public function downloadSample()
     {
-        $headers = ['name', 'email', 'phone', 'type', 'attribute_1', 'attribute_2', 'attribute_3', 'attribute_4'];
+        $headers = ['name', 'email', 'phone', 'attribute_1', 'attribute_2', 'attribute_3', 'attribute_4'];
         $sample = [
-            ['John Doe', 'john@example.com', '1234567890', 'MEMBER', 'Value1', 'Value2', 'Value3', 'Value4'],
-            ['Jane Smith', 'jane@example.com', '0987654321', 'OTHER', 'Value1', 'Value2', '', ''],
+            ['John Doe', 'john@example.com', '1234567890', 'Value1', 'Value2', 'Value3', 'Value4'],
+            ['Jane Smith', 'jane@example.com', '0987654321', 'Value1', 'Value2', '', ''],
         ];
 
         $filename = 'contacts_sample.csv';
@@ -232,7 +232,7 @@ class ContactController extends Controller
                 'name' => trim($row[0] ?? ''),
                 'email' => $email,
                 'phone' => trim($row[2] ?? ''),
-                'type' => in_array(strtoupper(trim($row[3] ?? '')), ['MEMBER', 'OTHER']) ? strtoupper(trim($row[3])) : 'OTHER',
+                'type' => 'SUBSCRIBED',
                 'attribute_1' => trim($row[4] ?? ''),
                 'attribute_2' => trim($row[5] ?? ''),
                 'attribute_3' => trim($row[6] ?? ''),
