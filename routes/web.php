@@ -49,12 +49,14 @@ Route::middleware(['auth', 'userstatus'])->group(function () {
         Route::get('contacts-import/sample', [ContactController::class, 'downloadSample'])->name('contacts.import.sample');
         Route::post('contacts-import/process', [ContactController::class, 'processImport'])->name('contacts.import.process');
         Route::get('contacts-by-debtor', [ContactController::class, 'getContactsByDebtor'])->name('contacts.by-debtor');
+        Route::get('contacts-export', [ContactController::class, 'export'])->name('contacts.export');
 
         // Mail Configuration
         Route::resource('mail-configurations', MailConfigurationController::class);
         Route::post('mail-configurations/bulk-delete', [MailConfigurationController::class, 'bulkDelete'])->name('mail-configurations.bulk-delete');
         Route::get('mail-configurations/{mailConfiguration}/report', [MailConfigurationController::class, 'report'])->name('mail-configurations.report');
         Route::post('mail-configurations/resend', [MailConfigurationController::class, 'resendMail'])->name('mail-configurations.resend');
+        Route::post('mail-configurations/{mailConfiguration}/send-report', [MailConfigurationController::class, 'sendReport'])->name('mail-configurations.send-report');
 
         // Debtor Attachments
         Route::resource('debtor-attachments', DebtorAttachmentController::class);

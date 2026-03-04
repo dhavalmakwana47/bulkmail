@@ -28,6 +28,7 @@
                     <h3 class="card-title" style="font-size: 21px;">Contacts</h3>
                     <div class="float-right">
                         <button type="button" class="btn btn-danger" id="bulkDeleteBtn" style="display:none;">Delete Selected</button>
+                        <button type="button" class="btn btn-info" id="exportBtn">Export Contacts</button>
                         <a href="{{ route('contacts.import') }}" class="btn btn-success">Import Contacts</a>
                         <a href="{{ route('contacts.create') }}" class="btn btn-primary">Add Contact</a>
                     </div>
@@ -112,6 +113,13 @@
             table.ajax.reload();
         });
 
+        $('#exportBtn').click(function() {
+            var debtorId = $('#debtorFilter').val();
+            var searchValue = table.search();
+            var url = "{{ route('contacts.export') }}?debtor_id=" + debtorId + "&search=" + searchValue;
+            window.location.href = url;
+        });
+
         $('#selectAll').click(function() {
             $('.contact-checkbox').prop('checked', this.checked);
             toggleBulkDeleteBtn();
@@ -147,12 +155,17 @@
                         url: "{{ route('contacts.bulk-delete') }}",
                         data: {
                             ids: ids,
+                            debtor_id: isDebtor ? {{ auth()->id() }} : null,
                             _token: "{{ csrf_token() }}"
                         },
                         success: function() {
                             table.ajax.reload();
                             $('#selectAll').prop('checked', false);
                             toggleBulkDeleteBtn();
+                            Swal.fire('Deleted!', 'Contacts have been deleted.', 'success');
+                        },
+                        error: function() {
+                            Swal.fire('Error!', 'Failed to delete contacts.', 'error');
                         }
                     });
                 }
@@ -179,11 +192,15 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        type: 'DELETE',
+                        type: 'POST',
                         url: "{{ route('contacts.index') }}/" + id,
-                        data: {_token: "{{ csrf_token() }}"},
+                        data: {_method: 'DELETE', _token: "{{ csrf_token() }}"},
                         success: function() {
                             table.ajax.reload();
+                            Swal.fire('Deleted!', 'Contact has been deleted.', 'success');
+                        },
+                        error: function() {
+                            Swal.fire('Error!', 'Failed to delete contact.', 'error');
                         }
                     });
                 }

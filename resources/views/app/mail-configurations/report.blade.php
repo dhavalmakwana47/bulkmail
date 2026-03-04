@@ -14,6 +14,8 @@
                 <div class="card-header">
                     <h3 class="card-title">Mail Configuration Report</h3>
                     <div class="float-right">
+                        <button onclick="sendReport('excel')" class="btn btn-success"><i class="fas fa-file-excel"></i> Email Excel</button>
+                        <button onclick="sendReport('pdf')" class="btn btn-danger"><i class="fas fa-file-pdf"></i> Email PDF</button>
                         <a href="{{ route('mail-configurations.index') }}" class="btn btn-default">Back</a>
                     </div>
                 </div>
@@ -134,6 +136,41 @@
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
+
+        function sendReport(format) {
+            Swal.fire({
+                title: 'Send Report',
+                text: `The ${format.toUpperCase()} report will be sent to your email`,
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'Send'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('mail-configurations.send-report', $mailConfiguration->id) }}",
+                        data: {
+                            format: format,
+                            _token: "{{ csrf_token() }}"
+                        },
+                        beforeSend: function() {
+                            Swal.fire({
+                                title: 'Processing...',
+                                text: 'Generating and sending report',
+                                allowOutsideClick: false,
+                                didOpen: () => { Swal.showLoading(); }
+                            });
+                        },
+                        success: function(response) {
+                            Swal.fire('Success!', response.message, 'success');
+                        },
+                        error: function(xhr) {
+                            Swal.fire('Error!', xhr.responseJSON?.message || 'Failed to send report', 'error');
+                        }
+                    });
+                }
+            });
+        }
 
         function resendMail(logId) {
             Swal.fire({

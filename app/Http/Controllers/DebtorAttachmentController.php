@@ -28,8 +28,8 @@ class DebtorAttachmentController extends Controller
                     return $row->user->name;
                 })
                 ->addColumn('action', function($row) {
-                    return '<a href="'.route('debtor-attachments.edit', $row->id).'" class="btn btn-sm btn-info">Edit</a> 
-                            <button type="button" class="btn btn-sm btn-danger" onclick="deleteItem('.$row->id.')">Delete</button>';
+                    return '<a href="'.route('debtor-attachments.edit', $row->id).'" class="btn btn-sm btn-info" title="Edit"><i class="fa fa-edit"></i></a> 
+                            <button type="button" class="btn btn-sm btn-danger" onclick="deleteItem('.$row->id.')" title="Delete"><i class="fa fa-trash"></i></button>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -109,7 +109,7 @@ class DebtorAttachmentController extends Controller
         Storage::disk('public')->delete($debtorAttachment->file_path);
         $debtorAttachment->delete();
 
-        return redirect()->route('debtor-attachments.index')->with('success', 'Attachment deleted successfully.');
+        return response()->json(['success' => true, 'message' => 'Attachment deleted successfully.']);
     }
 
     public function download($encryptedId)
@@ -117,7 +117,12 @@ class DebtorAttachmentController extends Controller
         try {
             $id = Crypt::decryptString($encryptedId);
             $attachment = DebtorAttachment::findOrFail($id);
-            return Storage::disk('public')->download($attachment->file_path, $attachment->file_name);
+            return response()->stream(function() use ($attachment) {
+                echo Storage::disk('public')->get($attachment->file_path);
+            }, 200, [
+                'Content-Type' => Storage::disk('public')->mimeType($attachment->file_path),
+                'Content-Disposition' => 'attachment; filename="' . $attachment->file_name . '"',
+            ]);
         } catch (\Exception $e) {
             abort(404);
         }

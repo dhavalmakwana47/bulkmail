@@ -47,8 +47,9 @@ class ContactController extends Controller
                     return $row->attributes->where('key', 'attribute_4')->first()->value ?? '-';
                 })
                 ->addColumn('action', function($row) {
-                    return '<a href="'.route('contacts.edit', $row->id).'" class="btn btn-sm btn-info">Edit</a> 
-                            <button type="button" class="btn btn-sm btn-danger" onclick="deleteContact('.$row->id.')">Delete</button>';
+                    return '<a href="'.route('contacts.show', $row->id).'" class="btn btn-sm btn-secondary" title="View"><i class="fa fa-eye"></i></a> 
+                            <a href="'.route('contacts.edit', $row->id).'" class="btn btn-sm btn-info" title="Edit"><i class="fa fa-edit"></i></a> 
+                            <button type="button" class="btn btn-sm btn-danger" onclick="deleteContact('.$row->id.')" title="Delete"><i class="fa fa-trash"></i></button>';
                 })
                 ->filter(function ($query) use ($request) {
                     if ($search = $request->get('search')['value']) {
@@ -134,11 +135,17 @@ class ContactController extends Controller
         return redirect()->route('contacts.index')->with('success', 'Contact updated successfully.');
     }
 
+    public function show(Contact $contact)
+    {
+        $contact->load(['user', 'attributes']);
+        return view('app.contacts.view', compact('contact'));
+    }
+
     public function destroy(Contact $contact)
     {
         $contact->delete();
 
-        return redirect()->route('contacts.index')->with('success', 'Contact deleted successfully.');
+        return response()->json(['success' => true, 'message' => 'Contact deleted successfully.']);
     }
 
     public function bulkDelete(Request $request)
@@ -296,5 +303,58 @@ class ContactController extends Controller
             'count' => $contacts->count(),
             'contacts' => $contacts
         ]);
+    }
+
+    public function export(Request $request)
+    {
+        $query = Contact::with(['user', 'attributes'])
+            ->whereHas('user', function($q) {
+                $q->where('type', '1');
+            });
+        
+        if ($request->debtor_id) {
+            $query->where('user_id', $request->debtor_id);
+        }
+        
+        if ($request->search) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('contacts.name', 'like', "%{$search}%")
+                  ->orWhere('contacts.email', 'like', "%{$search}%")
+                  ->orWhere('contacts.phone', 'like', "%{$search}%")
+                  ->orWhereHas('attributes', function($q) use ($search) {
+                      $q->where('value', 'like', "%{$search}%");
+                  });
+            });
+        }
+        
+        $contacts = $query->get();
+        
+        $filename = 'contacts_export_' . now()->format('YmdHis') . '.csv';
+        $handle = fopen('php://output', 'w');
+        
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        
+        $headers = ['ID', 'Corporate Debtor', 'Name', 'Email', 'Phone', 'Type', 'Attribute 1', 'Attribute 2', 'Attribute 3', 'Attribute 4'];
+        fputcsv($handle, $headers);
+        
+        foreach ($contacts as $contact) {
+            fputcsv($handle, [
+                $contact->id,
+                $contact->user->name,
+                $contact->name,
+                $contact->email,
+                $contact->phone,
+                is_string($contact->type) ? $contact->type : $contact->type->value,
+                $contact->attributes->where('key', 'attribute_1')->first()->value ?? '',
+                $contact->attributes->where('key', 'attribute_2')->first()->value ?? '',
+                $contact->attributes->where('key', 'attribute_3')->first()->value ?? '',
+                $contact->attributes->where('key', 'attribute_4')->first()->value ?? '',
+            ]);
+        }
+        
+        fclose($handle);
+        exit;
     }
 }

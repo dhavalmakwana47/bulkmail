@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="{{ asset('customdownload/css/jquery.dataTables.min.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .error { color: red; font-size: 12px; margin-top: 5px; }
+    </style>
 @endsection
 @section('content-body')
     <div class="row">
@@ -18,7 +21,7 @@
                         <div class="alert alert-danger">{{ $error }}</div>
                     @endforeach
                 </div>
-                <form action="{{ isset($mailConfiguration) ? route('mail-configurations.update', $mailConfiguration->id) : route('mail-configurations.store') }}" method="POST">
+                <form id="mailConfigForm" action="{{ isset($mailConfiguration) ? route('mail-configurations.update', $mailConfiguration->id) : route('mail-configurations.store') }}" method="POST">
                     @csrf
                     @if(isset($mailConfiguration))
                         @method('PUT')
@@ -30,7 +33,7 @@
                             <select name="user_id" id="debtorSelect" class="form-control" required>
                                 <option value="">Select Corporate Debtor</option>
                                 @foreach($corporateDebtors as $debtor)
-                                    <option value="{{ $debtor->id }}" data-name="{{ $debtor->name }}" {{ old('user_id', $mailConfiguration->user_id ?? '') == $debtor->id ? 'selected' : '' }}>
+                                    <option value="{{ $debtor->id }}" data-name="{{ $debtor->name }}" data-email="{{ $debtor->email }}" {{ old('user_id', $mailConfiguration->user_id ?? '') == $debtor->id ? 'selected' : '' }}>
                                         {{ $debtor->name }} ({{ $debtor->email }})
                                     </option>
                                 @endforeach
@@ -48,7 +51,7 @@
                         </div>
                         <div class="form-group">
                             <label>Reply Email</label>
-                            <input type="email" name="reply_email" class="form-control" value="{{ old('reply_email', $mailConfiguration->reply_email ?? '') }}" required>
+                            <input type="email" name="reply_email" id="replyEmail" class="form-control" value="{{ old('reply_email', $mailConfiguration->reply_email ?? '') }}" required>
                         </div>
                         <div class="form-group">
                             <label>Subject</label>
@@ -93,9 +96,55 @@
     <script src="{{ asset('customdownload/js/jquery.dataTables.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
     <script>
         var contactsData = [];
         var attachmentsData = [];
+
+        // Form Validation
+        $('#mailConfigForm').validate({
+            ignore: '',
+            rules: {
+                user_id: { required: true },
+                from_name: { required: true },
+                reply_email: { required: true, email: true },
+                subject: { required: true },
+                body: { 
+                    required: function() {
+                        return $('#bodyEditor').summernote('isEmpty');
+                    }
+                },
+                send_type: { required: true },
+                scheduled_at: {
+                    required: function() {
+                        return $('select[name="send_type"]').val() === 'SCHEDULED';
+                    }
+                }
+            },
+            messages: {
+                user_id: 'Please select a corporate debtor',
+                from_name: 'Please enter from name',
+                reply_email: {
+                    required: 'Please enter reply email',
+                    email: 'Please enter a valid email address'
+                },
+                subject: 'Please enter subject',
+                body: 'Please enter email body',
+                send_type: 'Please select send type',
+                scheduled_at: 'Please select scheduled date and time'
+            },
+            errorPlacement: function(error, element) {
+                if (element.attr('name') === 'body') {
+                    error.insertAfter('.note-editor');
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+            submitHandler: function(form) {
+                $('#bodyEditor').val($('#bodyEditor').summernote('code'));
+                form.submit();
+            }
+        });
 
         // Initialize Select2
         $('#attachmentsSelect').select2({
@@ -118,6 +167,14 @@
                 ['view', ['fullscreen', 'codeview', 'help']],
                 ['mybutton', ['insertTag']]
             ],
+            callbacks: {
+                onChange: function(contents) {
+                    $('#bodyEditor').val(contents);
+                    if (!$('#bodyEditor').summernote('isEmpty')) {
+                        $('#bodyEditor').valid();
+                    }
+                }
+            },
             buttons: {
                 insertTag: function(context) {
                     var ui = $.summernote.ui;
@@ -166,8 +223,10 @@
         $('#debtorSelect').change(function() {
             var selectedOption = $(this).find('option:selected');
             var debtorName = selectedOption.data('name') || '{{ auth()->user()->name }}';
+            var debtorEmail = selectedOption.data('email') || '{{ auth()->user()->email }}';
             var userId = $(this).val();
             $('#fromName').val(debtorName || '');
+            $('#replyEmail').val(debtorEmail || '');
 
             if (userId) {
                 $.ajax({

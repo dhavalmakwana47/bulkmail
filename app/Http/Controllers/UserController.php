@@ -26,8 +26,8 @@ class UserController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $btn = '<a onClick="deleteUser(' . $row->id . ')" class="btn btn-danger btn-xs deleteconfirm"><i class="fa fa-trash"></i></a>';
-                    $btn .= ' <a href="' . route('corporate-debtors.edit', $row->id) . '" class="btn btn-warning btn-xs"><i class="fa fa-pencil-alt"></i></a>';
+                    $btn = '<a onClick="deleteUser(' . $row->id . ')" class="btn btn-danger btn-xs deleteconfirm" title="Delete"><i class="fa fa-trash"></i></a>';
+                    $btn .= ' <a href="' . route('corporate-debtors.edit', $row->id) . '" class="btn btn-warning btn-xs" title="Edit"><i class="fa fa-pencil-alt"></i></a>';
                     return $btn;
                 })
                 ->editColumn('is_active', function ($row) {

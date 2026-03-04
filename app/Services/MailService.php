@@ -122,15 +122,14 @@ class MailService
         }
 
         $html = '<table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; width: 100%;">';
-        $html .= '<thead><tr><th>Attachment Name</th><th>Download</th></tr></thead>';
+        $html .= '<thead><tr><th>Attachment List</th></tr></thead>';
         $html .= '<tbody>';
         
         foreach ($attachments as $attachment) {
             $debtorAttachment = $attachment->debtorAttachment;
             $downloadUrl = route('debtor-attachments.download', Crypt::encryptString($debtorAttachment->id));
             $html .= '<tr>';
-            $html .= '<td>' . $debtorAttachment->name . '</td>';
-            $html .= '<td><a href="' . $downloadUrl . '">Download</a></td>';
+            $html .= '<td><a href="' . $downloadUrl . '">' . $debtorAttachment->name . '</a></td>';
             $html .= '</tr>';
         }
         

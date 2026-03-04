@@ -1,310 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>BulkMail - Professional Email Marketing & Communication Platform</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
+    <meta charset="UTF-8">
+    <title>Apexrise Consultant & E-Services</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com" rel="preconnect">
-    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
-    <!-- Vendor CSS Files -->
-    <link href="{{ asset('homepage/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('homepage/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-    <link href="{{ asset('homepage/assets/vendor/aos/aos.css') }}" rel="stylesheet">
-    <link href="{{ asset('homepage/assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('homepage/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Main CSS File -->
-    <link href="{{ asset('homepage/assets/css/main.css') }}" rel="stylesheet">
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WVR1139744"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+        }
 
-      gtag('config', 'G-WVR1139744');
-    </script>
-  
+        /* Navbar */
+        .navbar {
+            backdrop-filter: blur(10px);
+            background: rgba(13, 27, 42, 0.95);
+        }
+        .navbar a {
+            color: #fff !important;
+            font-weight: 500;
+        }
+        .navbar a:hover {
+            color: #ffc107 !important;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0d1b2a, #1b263b, #415a77);
+            color: white;
+            padding: 130px 0;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+        }
+        .hero p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-weight: 700;
+            margin-bottom: 50px;
+        }
+
+        /* Service Cards */
+        .service-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 35px 25px;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            transition: 0.4s;
+            height: 100%;
+        }
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 35px rgba(0,0,0,0.15);
+        }
+        .service-card i {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: #0d6efd;
+        }
+        .service-card h5 {
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* Stats Section */
+        .stats {
+            background: linear-gradient(135deg, #1b263b, #0d1b2a);
+            color: white;
+            padding: 80px 0;
+        }
+        .stats h3 {
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        /* About Section */
+        .about-box {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+
+        /* Contact */
+        .contact-box {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        /* Footer */
+        footer {
+            background: #0d1b2a;
+            color: white;
+            padding: 30px 0;
+        }
+    </style>
 </head>
 
-<body class="index-page">
+<body>
 
-    <header id="header" class="header d-flex align-items-center fixed-top">
-        <div class="container-fluid container-xl position-relative d-flex align-items-center">
-
-            <a href="{{ route('index') }}" class="logo d-flex align-items-center me-auto">
-                <img src="{{ asset('homepage/assets/img/logo.png') }}" alt="">
-                <!-- <h1 class="sitename">India E-Voting</h1> -->
-            </a>
-
-            <nav id="navmenu" class="navmenu">
-                <ul>
-                    <li><a href="{{ route('index') }}" class="">Home</a></li>
-                    <li><a href="#about">About us</a></li>
-                    <li><a href="#contact">Contact us</a></li>
-                    <li><a href="{{ route('login') }}">Admin Login</a></li>
-
-                    <!-- <li><a href="index.html#features">Features</a></li>
-                    <li><a href="index.html#services">Services</a></li>
-                    <li><a href="index.html#pricing">Pricing</a></li>
-                    <li class="dropdown"><a href="#"><span>Dropdown</span> <i
-                                class="bi bi-chevron-down toggle-dropdown"></i></a>
-                        <ul>
-                            <li><a href="#">Dropdown 1</a></li>
-                            <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i
-                                        class="bi bi-chevron-down toggle-dropdown"></i></a>
-                                <ul>
-                                    <li><a href="#">Deep Dropdown 1</a></li>
-                                    <li><a href="#">Deep Dropdown 2</a></li>
-                                    <li><a href="#">Deep Dropdown 3</a></li>
-                                    <li><a href="#">Deep Dropdown 4</a></li>
-                                    <li><a href="#">Deep Dropdown 5</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Dropdown 2</a></li>
-                            <li><a href="#">Dropdown 3</a></li>
-                            <li><a href="#">Dropdown 4</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="index.html#contact">Contact</a></li>  -->
-                </ul>
-                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-            </nav>
-
-
-        </div>
-    </header>
-
-    <main class="main">
-
-        <!-- Hero Section -->
-        <section id="hero" class="hero section">
-            <div class="hero-bg">
-                <img src="{{ asset('homepage/assets/img/hero-bg-light.webp') }}" alt="">
-            </div>
-            <div class="container text-center">
-                <div class="d-flex flex-column justify-content-center align-items-center">
-                    <h1 data-aos="fade-up" class="">Welcome to <span>BulkMail</span></h1>
-                    <p data-aos="fade-up" data-aos-delay="100" class="">Professional Email Marketing & Bulk Communication Platform<br></p>
-                    <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-                        <a href="#about" class="btn-get-started">Get Started</a>
-                        <!-- <a href="#"
-                            class="glightbox btn-watch-video d-flex align-items-center"><i
-                                class="bi bi-play-circle"></i><span>Watch Video</span></a> -->
-                    </div>
-                    <img src="{{ asset('homepage/assets/img/hero-services-img.webp') }}" class="img-fluid hero-img"
-                        alt="" data-aos="zoom-out" data-aos-delay="300">
-                </div>
-            </div>
-
-        </section><!-- /Hero Section -->
-
-        <!-- Featured Services Section -->
-        <section id="featured-services" class="featured-services section">
-
-            <div class="container">
-
-                <div class="row gy-4">
-
-                    <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="100">
-                        <div class="service-item d-flex">
-                            <div class="icon flex-shrink-0"><i class="bi bi-envelope"></i></div>
-                            <div>
-                                <h4 class="title"><a href="#" class="stretched-link">Bulk Email Sending</a></h4>
-                                <p class="description">Send thousands of personalized emails to your contacts with advanced template customization and tracking.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Service Item -->
-
-                    <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="200">
-                        <div class="service-item d-flex">
-                            <div class="icon flex-shrink-0"><i class="bi bi-people"></i></div>
-                            <div>
-                                <h4 class="title"><a href="#" class="stretched-link">Contact Management</a></h4>
-                                <p class="description">Organize and manage your contacts efficiently with import/export capabilities and custom attributes.</p>
-                            </div>
-                        </div>
-                    </div><!-- End Service Item -->
-
-                    <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="300">
-                        <div class="service-item d-flex">
-                            <div class="icon flex-shrink-0"><i class="bi bi-graph-up"></i></div>
-                            <div>
-                                <h4 class="title"><a href="#" class="stretched-link">Email Analytics</a>
-                                </h4>
-                                <p class="description">Track email delivery, opens, and engagement with comprehensive reporting and analytics.</p>
-                            </div>
-                        </div>
-                    </div><!-- End Service Item -->
-
-                </div>
-
-            </div>
-
-        </section><!-- /Featured Services Section -->
-
-        <!-- About Section -->
-        <section id="about" class="about section">
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container">
-        <p class="who-we-are"><Center><b><h1><u>Who We Are</u></h1> </b></Center></p>
-        <h3>BulkMail – Revolutionizing Email Communication</h3>
+        <a class="navbar-brand fw-bold" href="#">Apexrise Consultant</a>
 
-        <p class="fst-italic">
-            At BulkMail, we leverage cutting-edge technology to deliver powerful, reliable, and scalable email marketing solutions. Our mission is to empower businesses and organizations to communicate effectively with their audiences through personalized bulk email campaigns.
-        </p>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-        <p class="fst-italic">
-            Founded with a vision to simplify mass communication, we have evolved into a trusted platform for email marketing across diverse industries. Our system is designed to ensure high deliverability, security, and comprehensive tracking of every email sent.
-        </p>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li><a href="{{ route('index') }}" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About Us</a></li>
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="{{ route('login') }}" class="nav-link btn btn-warning text-dark ms-2 px-3">User Login</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-        <p class="fst-italic">
-            What truly sets us apart is our commitment to user experience and results. We provide intuitive tools for contact management, template customization, and real-time analytics that help you understand and improve your email campaigns.
-        </p>
-
-        <p class="fst-italic">
-            Our comprehensive offerings include bulk email sending, contact management, attachment handling, email tracking, and detailed reporting—built to meet the highest standards of deliverability and compliance.
-        </p>
-
-        <p class="fst-italic">
-            At BulkMail, we are more than an email service—we are your partner in building meaningful connections with your audience. Join us as we transform the way you communicate with innovation, reliability, and trust.
-        </p>
+<!-- HERO -->
+<section class="hero">
+    <div class="container">
+        <h1>Apexrise Consultant & E-Services</h1>
+        <p>Secure • Transparent • Compliant Digital Solutions for Corporate & Insolvency Professionals</p>
+        <a href="#services" class="btn btn-warning btn-lg mt-4 px-4">Explore Our Services</a>
     </div>
 </section>
 
+<!-- SERVICES -->
+<section id="services" class="py-5 mt-5">
+    <div class="container">
+        <h2 class="text-center section-title">Our Professional Services</h2>
 
-        <!-- Features Section -->
-        <section id="features-details" class="features-details section">
+        <div class="row g-4">
 
-            <!-- Section Title -->
-            <div class="container section-title" data-aos="fade-up">
-                <h2 class="">Key Features</h2>
-                <p>Powerful tools to manage and execute your email campaigns effectively.</p>
+            <div class="col-md-4">
+                <div class="service-card">
+                    <i class="fas fa-vote-yea"></i>
+                    <h5><a href =https://indiaevoting.com/ target="_blank" rel="noopener noreferrer">E-Voting</a></h5>
+                    <p>Secure corporate voting platform for CoC meetings, AGM and shareholder approvals.</p>
+                </div>
             </div>
 
-            <div class="container">
+            <div class="col-md-4">
+                <div class="service-card">
+                    <i class="fas fa-gavel"></i>
+                    <h5><a href =https://indiaeauction.com/ target="_blank" rel="noopener noreferrer">E-Auction</a></h5>
+                    <p>Transparent and compliant digital auction system for liquidation & asset sales.</p>
+                </div>
+            </div>
 
-                <div class="row gy-4 justify-content-between features-item">
+            <div class="col-md-4">
+                <div class="service-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h5><a href =https://indiaeauction.com/ target="_blank" rel="noopener noreferrer">NPV E-Bidding</a></h5>
+                    <p>Advanced NPV-based bidding platform for insolvency resolution processes.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-card">
+                    <i class="fas fa-database"></i>
+                    <h5><a href =https://datasafehub.in/ target="_blank" rel="noopener noreferrer">Virtual Data Room</a></h5>
+                    <p>Highly secure confidential document sharing platform.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-card">
+                    <i class="fas fa-envelope-open-text"></i>
+                    <h5><a href =https://apexriseconsultant.com/ target="_blank" rel="noopener noreferrer">Bulk Mail</a></h5>
+                    <p>Professional bulk email system for stakeholder & compliance communication.</p>
+                </div>
+            </div>
 
-                    <div class="col-lg-5 d-flex align-items-center" data-aos="fade-up" data-aos-delay="200">
-                        <div class="content">
-                             <h3>Personalized Email Templates</h3>
-                            <p>
-                                Create dynamic email templates with custom tags like @{{name}}, @{{email}}, and custom attributes. Our system automatically personalizes each email for every recipient, making your communication more engaging and effective.
-                            </p>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-5 d-flex align-items-center order-2 order-lg-1" data-aos="fade-up"
-                        data-aos-delay="100">
+            <div class="col-md-4">
+                <div class="service-card">
+                    <i class="fas fa-file-invoice"></i>
+                    <h5><a href =https://apexriseconsultant.com/ target="_blank" rel="noopener noreferrer">Claim Management</a></h5>
+                    <p>Digital claim submission, verification and tracking system.</p>
+                </div>
+            </div>
 
-                        <div class="content">
-                            <h3>Advanced Contact Management</h3>
-                            <p>
-                                Import contacts in bulk, organize them with custom attributes, and segment your audience for targeted campaigns. Our intuitive interface makes managing thousands of contacts simple and efficient.
-                            </p>
-                            
-                        </div>
-                        </div>
-                        
-                         <div class="col-lg-5 d-flex align-items-center" data-aos="fade-up" data-aos-delay="200">
-                        <div class="content">
-                             <h3>Attachment Management</h3>
-                            <p>
-                                Easily attach files to your email campaigns and generate downloadable attachment lists. Perfect for sending documents, reports, or resources to your contacts with secure download links.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-5 d-flex align-items-center order-2 order-lg-1" data-aos="fade-up"
-                        data-aos-delay="100">
+            <div class="col-md-4">
+                <div class="service-card">
+                    <i class="fas fa-laptop-code"></i>
+                    <h5><a href =https://apexriseconsultant.com/ target="_blank" rel="noopener noreferrer">Website Design & Maintenance</a></h5>
+                    <p>Corporate websites with secure hosting and long-term maintenance.</p>
+                </div>
+            </div>
 
-                        <div class="content">
-                            <h3>Real-Time Email Tracking</h3>
-                            <p>
-                                Monitor the status of every email sent with detailed logs. Track delivery, failures, and engagement metrics to optimize your campaigns and improve deliverability rates.
-                            </p>
-                            
-                        </div>
-
-                </div><!-- Features Item -->
-
-              <div class="col-lg-5 d-flex align-items-center" data-aos="fade-up" data-aos-delay="200">
-                        <div class="content">
-                             <h3>Multiple SMTP Connections</h3>
-                            <p>
-                                Configure multiple SMTP connections and let our system automatically distribute emails across them for better deliverability and load balancing. Supports AWS SES and other SMTP providers.
-                            </p>
-                            
-                        </div>
-                    </div>
-                    
-                    <div class="col-lg-5 d-flex align-items-center order-2 order-lg-1" data-aos="fade-up"
-                        data-aos-delay="100">
-
-                        <div class="content">
-                            <h3>Comprehensive Reporting</h3>
-                            <p>
-                               Get detailed reports on your email campaigns including total sent, failed, and delivery statistics. Resend failed emails with a single click and maintain complete activity logs.
-                            </p>
-                           
-                        </div>
-
-                    </div>
-                    
             
-           
 
-        </section><!-- /Features Details Section -->
-
-     
-        <!-- Contact Section -->
-        <section id="contact" class="contact section">
-    <div class="container section-title" data-aos="fade-up">
-        <h2>Get in Touch</h2>
-        <p>We’re here to help. Reach out to us for any queries, support, or collaboration.</p>
-    </div>
-
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="row gy-4 justify-content-center">
-
-            <div class="col-lg-4 col-md-6">
-                <div class="info-item d-flex flex-column justify-content-center align-items-center text-center"
-                     data-aos="fade-up" data-aos-delay="200">
-                    <i class="bi bi-envelope-open"></i>
-                    <h3>Official Email</h3>
-                    <p><a href="mailto:info@bulkmail.com">info@bulkmail.com</a></p>
+            <div class="col-md-4">
+                <div class="service-card">
+                    <i class="fas fa-bullhorn"></i>
+                    <h5><a href =https://apexriseconsultant.com/ target="_blank" rel="noopener noreferrer">Social Media</a></h5>
+                    <p>Professional digital branding and online corporate presence management.</p>
                 </div>
             </div>
 
-            <div class="col-lg-4 col-md-6">
-                <div class="info-item d-flex flex-column justify-content-center align-items-center text-center"
-                     data-aos="fade-up" data-aos-delay="300">
-                    <i class="bi bi-telephone-forward"></i>
-                    <h3>Call Us</h3>
-                    <p><a href="tel:+917990822351">+91 79908 22351</a></p>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6">
-                <div class="info-item d-flex flex-column justify-content-center align-items-center text-center"
-                     data-aos="fade-up" data-aos-delay="400">
-                    <i class="bi bi-envelope-at"></i>
-                    <h3>Support Email</h3>
-                    <p><a href="mailto:support@bulkmail.com">support@bulkmail.com</a></p>
+            <div class="col-md-4">
+                <div class="service-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h5><a href =https://apexriseconsultant.com/ target="_blank" rel="noopener noreferrer">Application & Software</a></h5>
+                    <p>Custom web & mobile application development solutions.</p>
                 </div>
             </div>
 
@@ -312,35 +230,124 @@
     </div>
 </section>
 
-
-    </main>
-
-    <footer id="footer" class="">
-        <div class="container copyright text-center mt-1">
-            <p>©2024<span> Copyright</span><strong class="px-2 sitename">BulkMail</strong>
-            <span>All Rights Reserved</span>
-            </p>
+<!-- STATS -->
+<section class="stats text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h3>400+</h3>
+                <p>Corporate Clients</p>
             </div>
-    </footer>
+            <div class="col-md-4">
+                <h3>30+</h3>
+                <p>Successful Projects</p>
+            </div>
+            <div class="col-md-4">
+                <h3>99.9%</h3>
+                <p>Secure Transactions</p>
+            </div>
+        </div>
+    </div>
+</section>
 
+<!-- ABOUT -->
+<section id="about" class="py-5">
+    <div class="container">
+        <h2 class="text-center section-title">About Apexrise</h2>
+        <div class="about-box text-center">
+            <p>
+                Apexrise Consultant & E-Services provides legally compliant, secure and scalable 
+                digital platforms for Insolvency Professionals, Financial Institutions and Corporates 
+                across India. Our focus is transparency, security and technical excellence.
+            </p>
+        </div>
+    </div>
+</section>
 
-    <!-- Scroll Top -->
-    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
-            class="bi bi-arrow-up-short"></i></a>
+<section id="contact" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center section-title mb-5">Contact Us</h2>
 
-    <!-- Preloader -->
-    <div id="preloader"></div>
+        <div class="row g-4">
 
-    <!-- Vendor JS Files -->
-    <script src="{{ asset('homepage/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('homepage/assets/vendor/php-email-form/validate.js') }}"></script>
-    <script src="{{ asset('homepage/assets/vendor/aos/aos.js') }}"></script>
-    <script src="{{ asset('homepage/assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
-    <script src="{{ asset('homepage/assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+            <!-- Contact Information -->
+            <div class="col-md-5">
+                <div class="contact-box p-4 shadow rounded bg-white h-100">
 
-    <!-- Main JS File -->
-    <script src="{{ asset('homepage/assets/js/main.js') }}"></script>
+                    <h5 class="fw-bold mb-4">Get In Touch</h5>
 
+                    <div class="d-flex mb-4">
+                        <div class="me-3 text-primary fs-4">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <strong>Email</strong><br>
+                            info@apexriseconsultant.com<br>
+                        </div>
+                    </div>
+
+                    <div class="d-flex mb-4">
+                        <div class="me-3 text-primary fs-4">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div>
+                            <strong>Mobile</strong><br>
+                            +91 78741 38237<br>
+                            +91 79908 22351
+                        </div>
+                    </div>
+
+                    <div class="d-flex">
+                        <div class="me-3 text-primary fs-4">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <strong>Office Address</strong><br>
+                            1018 , Derasar Vado Khancho,<br>
+                            Lalabhai Ni Pole, Mandavi Ni Pole,<br>
+                            Maneck Chowk , Ahmedabad, Gujarat – 380009
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="col-md-7">
+                <div class="contact-box p-4 shadow rounded bg-white">
+                    <form method="POST" action="#">
+                        @csrf
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control mb-3" placeholder="Your Name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="email" class="form-control mb-3" placeholder="Your Email" required>
+                            </div>
+                        </div>
+
+                        <input type="text" class="form-control mb-3" placeholder="Mobile Number" required>
+
+                        <textarea class="form-control mb-3" rows="4" placeholder="Your Message" required></textarea>
+
+                        <button class="btn btn-primary w-100 py-2">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- FOOTER -->
+<footer class="text-center">
+    <div class="container">
+        <p class="mb-0">© {{ date('Y') }} Apexrise Consultant & E-Services | All Rights Reserved</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

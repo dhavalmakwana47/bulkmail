@@ -73,11 +73,15 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        type: 'DELETE',
+                        type: 'POST',
                         url: "{{ route('debtor-attachments.index') }}/" + id,
-                        data: {_token: "{{ csrf_token() }}"},
+                        data: {_method: 'DELETE', _token: "{{ csrf_token() }}"},
                         success: function() {
                             table.ajax.reload();
+                            Swal.fire('Deleted!', 'Attachment has been deleted.', 'success');
+                        },
+                        error: function() {
+                            Swal.fire('Error!', 'Failed to delete attachment.', 'error');
                         }
                     });
                 }

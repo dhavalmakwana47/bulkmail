@@ -98,11 +98,15 @@
                     $.ajax({
                         type: 'POST',
                         url: "{{ route('mail-configurations.bulk-delete') }}",
-                        data: {ids: ids, _token: "{{ csrf_token() }}"},
+                        data: {ids: ids, debtor_id: isDebtor ? {{ auth()->id() }} : null, _token: "{{ csrf_token() }}"},
                         success: function() {
                             table.ajax.reload();
                             $('#selectAll').prop('checked', false);
                             toggleBulkDeleteBtn();
+                            Swal.fire('Deleted!', 'Items have been deleted.', 'success');
+                        },
+                        error: function() {
+                            Swal.fire('Error!', 'Failed to delete items.', 'error');
                         }
                     });
                 }
@@ -125,11 +129,15 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        type: 'DELETE',
+                        type: 'POST',
                         url: "{{ route('mail-configurations.index') }}/" + id,
-                        data: {_token: "{{ csrf_token() }}"},
+                        data: {_method: 'DELETE', _token: "{{ csrf_token() }}"},
                         success: function() {
                             table.ajax.reload();
+                            Swal.fire('Deleted!', 'Item has been deleted.', 'success');
+                        },
+                        error: function() {
+                            Swal.fire('Error!', 'Failed to delete item.', 'error');
                         }
                     });
                 }
