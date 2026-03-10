@@ -15,6 +15,9 @@ class SendBulkMailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $timeout = 3600;
+    public $tries = 3;
+
     public $mailConfigId;
 
     public function __construct($mailConfigId)

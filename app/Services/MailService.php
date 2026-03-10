@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\ActionType;
 use App\Jobs\SendBulkMailJob;
+use App\Jobs\SendBulkMailChunkJob;
 use App\Models\Contact;
 use App\Models\DebtorAttachment;
 use App\Models\MailConfiguration;
@@ -14,10 +15,43 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Bus;
 
 class MailService
 {
     public function sendBulkMail(MailConfiguration $mailConfig)
+    {
+        $contacts = Contact::where('user_id', $mailConfig->user_id)
+            ->subscribed()
+            ->pluck('id');
+
+        $chunkSize = 50;
+        $chunks = $contacts->chunk($chunkSize);
+        $jobs = [];
+
+        foreach ($chunks as $index => $chunk) {
+            $isLastChunk = ($index === $chunks->count() - 1);
+            $jobs[] = new SendBulkMailChunkJob($mailConfig->id, $chunk->toArray(), $isLastChunk);
+        }
+
+        Bus::batch($jobs)
+            ->name('Bulk Mail: ' . $mailConfig->subject)
+            ->dispatch();
+
+        Log::info('Bulk mail jobs dispatched', [
+            'mail_config_id' => $mailConfig->id,
+            'total_contacts' => $contacts->count(),
+            'total_chunks' => $chunks->count(),
+        ]);
+
+        return [
+            'total_sent' => 0,
+            'total_failed' => 0,
+            'total_contacts' => $contacts->count(),
+        ];
+    }
+
+    public function sendBulkMailChunk(MailConfiguration $mailConfig, array $contactIds)
     {
         $sesConnection = SesConnection::active()->inRandomOrder()->first();
 
@@ -28,9 +62,7 @@ class MailService
 
         $this->configureSes($sesConnection);
 
-        $contacts = Contact::where('user_id', $mailConfig->user_id)
-            ->subscribed()
-            ->get();
+        $contacts = Contact::whereIn('id', $contactIds)->get();
         $attachments = $mailConfig->configurationAttachments()->with('debtorAttachment')->get();
 
         $totalSent = 0;
@@ -79,10 +111,6 @@ class MailService
                 Log::error('Mail send failed: ' . $e->getMessage());
             }
         }
-
-        $mailConfig->update(['status' => 2]);
-
-        activity_log('MailConfiguration', ActionType::SEND, $mailConfig, null, ['total_sent' => $totalSent, 'total_failed' => $totalFailed]);
 
         return [
             'total_sent' => $totalSent,

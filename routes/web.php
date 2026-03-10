@@ -79,16 +79,27 @@ Route::get('/run-queue-secret-xyz123', function () {
     Artisan::call('queue:work', [
         '--stop-when-empty' => true,
         '--tries'           => 3,
-        '--timeout'         => 60,
+        '--timeout'         => 600,
     ]);
 
     return 'Queue processed OK';
 })->name('run-queue');
 
+
 Route::get('/run-schedule-secret-xyz123', function () {
     Artisan::call('schedule:run');
     return 'Schedule processed OK';
 })->name('run-schedule');
+
+Route::get('/run-failed-jobs', function () {
+    Artisan::call('queue:retry', ['id' => 'all']);
+    return 'Failed jobs processed OK';
+})->name('run-failed-jobs');
+
+Route::get('/run-migration-secret-xyz123', function () {
+    Artisan::call('migrate', ['--force' => true]);
+    return 'Migration completed OK';
+});
 
 // Authentication Routes
 Auth::routes();

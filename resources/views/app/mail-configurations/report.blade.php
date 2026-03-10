@@ -82,7 +82,7 @@
                             <td>
                                 @if($mailConfiguration->status == 0)
                                     <span class="badge badge-warning">Pending</span>
-                                @elseif($mailConfiguration->status == 1)
+                                @elseif($mailConfiguration->status == 2)
                             
                                     <span class="badge badge-success">Completed</span>
                                 @endif
