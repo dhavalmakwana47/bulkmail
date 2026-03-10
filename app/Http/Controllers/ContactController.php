@@ -6,8 +6,10 @@ use App\Http\Requests\ContactRequest;
 use App\Http\Requests\ContactImportRequest;
 use App\Models\Contact;
 use App\Models\User;
+use App\Imports\ContactsImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class ContactController extends Controller
@@ -206,90 +208,35 @@ class ContactController extends Controller
         $allowDuplicates = $user->duplicate_email;
 
         $file = $request->file('csv_file');
-        $handle = fopen($file->getRealPath(), 'r');
         
-        $header = fgetcsv($handle);
-        $imported = 0;
-        $skipped = [];
-        $chunk = [];
-        $chunkSize = 100;
+        Contact::$disableActivityLog = true;
+        $import = new ContactsImport($userId, $allowDuplicates);
+        Excel::import($import, $file);
+        Contact::$disableActivityLog = false;
 
-        while (($row = fgetcsv($handle)) !== false) {
-            if (count($row) < 2) continue;
+        $failures = $import->getFailures();
+        $errors = $import->getErrors();
+        $skipped = $import->getSkipped();
+        
+        $imported = Contact::where('user_id', $userId)->count();
 
-            $email = trim($row[1] ?? '');
-            if (empty($email)) continue;
-
-            if (!$allowDuplicates) {
-                $exists = Contact::where('user_id', $userId)->where('email', $email)->exists();
-                if ($exists) {
-                    $skipped[] = ['name' => $row[0] ?? '', 'email' => $email, 'reason' => 'Duplicate email'];
-                    continue;
-                }
-            }
-
-            $chunk[] = [
-                'name' => trim($row[0] ?? ''),
-                'email' => $email,
-                'phone' => trim($row[2] ?? ''),
-                'type' => 'SUBSCRIBED',
-                'attribute_1' => trim($row[4] ?? ''),
-                'attribute_2' => trim($row[5] ?? ''),
-                'attribute_3' => trim($row[6] ?? ''),
-                'attribute_4' => trim($row[7] ?? ''),
+        foreach ($failures as $failure) {
+            $skipped[] = [
+                'name' => $failure->values()['name'] ?? 'N/A',
+                'email' => $failure->values()['email'] ?? 'N/A',
+                'reason' => implode(', ', $failure->errors())
             ];
-
-            if (count($chunk) >= $chunkSize) {
-                $this->saveChunk($chunk, $userId);
-                $imported += count($chunk);
-                $chunk = [];
-            }
         }
 
-        if (!empty($chunk)) {
-            $this->saveChunk($chunk, $userId);
-            $imported += count($chunk);
-        }
-
-        fclose($handle);
-
-        $message = "Successfully imported {$imported} contacts.";
+        $message = "Successfully imported contacts.";
         if (!empty($skipped)) {
             session()->flash('skipped', $skipped);
-            $message .= " " . count($skipped) . " records were skipped due to duplicate emails.";
+            $message .= " " . count($skipped) . " records were skipped.";
         }
 
         activity_log('Contact', \App\Enums\ActionType::IMPORT, null, null, ['imported' => $imported, 'skipped' => count($skipped)]);
 
         return redirect()->route('contacts.index')->with('success', $message);
-    }
-
-    private function saveChunk(array $chunk, int $userId)
-    {
-        DB::transaction(function () use ($chunk, $userId) {
-            Contact::$disableActivityLog = true;
-            
-            foreach ($chunk as $data) {
-                $attributes = [
-                    'attribute_1' => $data['attribute_1'],
-                    'attribute_2' => $data['attribute_2'],
-                    'attribute_3' => $data['attribute_3'],
-                    'attribute_4' => $data['attribute_4'],
-                ];
-                unset($data['attribute_1'], $data['attribute_2'], $data['attribute_3'], $data['attribute_4']);
-
-                $data['user_id'] = $userId;
-                $contact = Contact::create($data);
-
-                foreach ($attributes as $key => $value) {
-                    if (!empty($value)) {
-                        $contact->attributes()->create(['key' => $key, 'value' => $value]);
-                    }
-                }
-            }
-            
-            Contact::$disableActivityLog = false;
-        });
     }
 
     public function getContactsByDebtor(Request $request)
