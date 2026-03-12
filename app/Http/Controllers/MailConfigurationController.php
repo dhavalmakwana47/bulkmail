@@ -13,53 +13,52 @@ use Yajra\DataTables\Facades\DataTables;
 
 class MailConfigurationController extends Controller
 {
-    public function __construct(private MailConfigurationService $service)
-    {}
+    public function __construct(private MailConfigurationService $service) {}
 
     public function index(Request $request)
     {
         if ($request->ajax()) {
             $data = MailConfiguration::with('user')
-                ->whereHas('user', function($q) {
+                ->whereHas('user', function ($q) {
                     $q->where('type', '1');
                 });
-            
+
             if ($request->debtor_id) {
                 $data->where('user_id', $request->debtor_id);
             }
-            
+
             $data->select('mail_configurations.*');
-            
+
             return DataTables::of($data)
-                ->addColumn('checkbox', function($row) {
-                    return '<input type="checkbox" value="'.$row->id.'" class="item-checkbox">';
+                ->addColumn('checkbox', function ($row) {
+                    return '<input type="checkbox" value="' . $row->id . '" class="item-checkbox">';
                 })
-                ->addColumn('corporate_debtor', function($row) {
+                ->addColumn('corporate_debtor', function ($row) {
                     return $row->user->name;
                 })
-                ->addColumn('send_type', function($row) {
+                ->addColumn('send_type', function ($row) {
                     return is_string($row->send_type) ? $row->send_type : $row->send_type->value;
                 })
-                ->editColumn('scheduled_at', function($row) {
+                ->editColumn('scheduled_at', function ($row) {
                     return $row->scheduled_at ? Carbon::parse($row->scheduled_at)->format('d-m-Y H:i') : '-';
                 })
-                ->addColumn('action', function($row) {
-                     $button = '<a href="'.route('mail-configurations.show', $row->id).'" class="btn btn-sm btn-secondary" title="View"><i class="fa fa-eye"></i></a> ';
+                ->addColumn('action', function ($row) {
+                    $button = '<a href="' . route('mail-configurations.show', $row->id) . '" class="btn btn-sm btn-secondary" title="View"><i class="fa fa-eye"></i></a> ';
                     if ($row->status == 2) {
-                        $button .= '<a href="'.route('mail-configurations.report', $row->id).'" class="btn btn-sm btn-success" title="Report"><i class="fa fa-file"></i></a> ';
+                        $button .= '<a href="' . route('mail-configurations.report', $row->id) . '" class="btn btn-sm btn-success" title="Report"><i class="fa fa-file"></i></a> ';
                     }
 
                     if ($row->status == 0) {
-                        $button .= '<a href="'.route('mail-configurations.edit', $row->id).'" class="btn btn-sm btn-info" title="Edit"><i class="fa fa-edit"></i></a> ';
+                        $button .= '<a href="' . route('mail-configurations.edit', $row->id) . '" class="btn btn-sm btn-primary" title="Edit"><i class="fa fa-edit"></i></a> ';
+                        $button .= '<button type="button" class="btn btn-sm btn-danger" onclick="deleteItem('.$row->id.')" title="Delete"><i class="fa fa-trash"></i></button>';
                     }
 
-                    $button .= '<button type="button" class="btn btn-sm btn-danger" onclick="deleteItem('.$row->id.')" title="Delete"><i class="fa fa-trash"></i></button>';
                     return $button;
                 })
                 ->rawColumns(['checkbox', 'action'])
                 ->make(true);
         }
-        
+
         return view('app.mail-configurations.list');
     }
 
@@ -74,13 +73,13 @@ class MailConfigurationController extends Controller
         $validated = $request->validated();
         $attachments = $validated['attachments'] ?? [];
         unset($validated['attachments']);
-        
+
         if (auth()->user()->type == '1') {
             $validated['user_id'] = auth()->id();
         }
-        
+
         $mailConfig = MailConfiguration::create($validated);
-        
+
         if (!empty($attachments)) {
             $this->service->syncAttachments($mailConfig, $attachments);
         }
@@ -95,7 +94,7 @@ class MailConfigurationController extends Controller
         if ($mailConfiguration->status == 1 || $mailConfiguration->status == 2) {
             return redirect()->route('mail-configurations.index')->with('error', 'Cannot edit mail configuration that is already processing.');
         }
-        
+
         $mailConfiguration->load('configurationAttachments');
         $corporateDebtors = User::where('type', '1')->where('is_active', 1)->get();
         return view('app.mail-configurations.addedit', compact('mailConfiguration', 'corporateDebtors'));
@@ -106,13 +105,13 @@ class MailConfigurationController extends Controller
         $validated = $request->validated();
         $attachments = $validated['attachments'] ?? [];
         unset($validated['attachments']);
-        
+
         if (auth()->user()->type == '1') {
             $validated['user_id'] = auth()->id();
         }
-        
+
         $mailConfiguration->update($validated);
-        
+
         if (!empty($attachments)) {
             $this->service->syncAttachments($mailConfiguration, $attachments);
         } else {
@@ -132,7 +131,7 @@ class MailConfigurationController extends Controller
 
     public function destroy(MailConfiguration $mailConfiguration)
     {
-    
+
         $mailConfiguration->delete();
 
         return response()->json(['success' => true, 'message' => 'Mail Configuration deleted successfully.']);
@@ -146,11 +145,11 @@ class MailConfigurationController extends Controller
         ]);
 
         $query = MailConfiguration::whereIn('id', $validated['ids']);
-        
+
         if ($request->debtor_id) {
             $query->where('user_id', $request->debtor_id);
         }
-        
+
         $query->delete();
 
         return response()->json(['success' => true]);
@@ -158,52 +157,62 @@ class MailConfigurationController extends Controller
 
     public function report(Request $request, MailConfiguration $mailConfiguration)
     {
+        if ($request->has('download')) {
+            return $this->downloadReport($request->download, $mailConfiguration);
+        }
+
         if ($request->ajax()) {
             $data = $mailConfiguration->recipientLogs()->with('contact');
-            
+
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('contact_name', function($row) {
+                ->addColumn('contact_name', function ($row) {
                     return $row->contact->name;
                 })
-                ->addColumn('contact_email', function($row) {
+                ->addColumn('contact_email', function ($row) {
                     return $row->contact->email;
                 })
-                ->editColumn('status', function($row) {
+                ->editColumn('status', function ($row) {
                     $status = is_string($row->status) ? $row->status : $row->status->value;
-                    $badge = $status === 'SENT' ? 'success' : 'danger';
-                    return '<span class="badge badge-'.$badge.'">'.$status.'</span>';
+                    $badge = $status === 'SENT'
+                        ? 'warning'
+                        : ($status === 'DELIVERED'
+                            ? 'success'
+                            : 'danger');
+                    return '<span class="badge badge-' . $badge . '">' . $status . '</span>';
                 })
-                ->editColumn('sent_at', function($row) {
+                ->editColumn('sent_at', function ($row) {
                     return $row->sent_at ? (is_string($row->sent_at) ? $row->sent_at : $row->sent_at->format('d-m-Y H:i:s')) : '-';
                 })
-                ->editColumn('delivered_at', function($row) {
+                ->editColumn('delivered_at', function ($row) {
                     return $row->delivered_at ? (is_string($row->delivered_at) ? $row->delivered_at : $row->delivered_at->format('d-m-Y H:i:s')) : '-';
                 })
-                ->editColumn('message_id', function($row) {
+                ->editColumn('message_id', function ($row) {
                     return $row->message_id ?? '-';
                 })
-                ->editColumn('error_message', function($row) {
+                ->editColumn('error_message', function ($row) {
                     return $row->error_message ?? '-';
                 })
-                ->editColumn('bounce_reason', function($row) {
+                ->editColumn('bounce_reason', function ($row) {
                     return $row->bounce_reason ?? '-';
                 })
-                ->addColumn('action', function($row) {
-                    return '<button type="button" class="btn btn-sm btn-primary" onclick="resendMail('.$row->id.')">Resend</button>';
+                ->addColumn('action', function ($row) {
+                    return '<button type="button" class="btn btn-sm btn-primary" onclick="resendMail(' . $row->id . ')">Resend</button>';
                 })
                 ->rawColumns(['status', 'action'])
                 ->make(true);
         }
-        
+
         $mailConfiguration->load('user');
-        
+
         $stats = [
             'total' => $mailConfiguration->recipientLogs()->count(),
             'sent' => $mailConfiguration->recipientLogs()->where('status', 'SENT')->count(),
+            'delivered' => $mailConfiguration->recipientLogs()->where('status', 'DELIVERED')->count(),
             'failed' => $mailConfiguration->recipientLogs()->where('status', 'FAILED')->count(),
+            'bounced' => $mailConfiguration->recipientLogs()->where('status', 'BOUNCED')->count(),
         ];
-        
+
         return view('app.mail-configurations.report', compact('mailConfiguration', 'stats'));
     }
 
@@ -232,7 +241,7 @@ class MailConfigurationController extends Controller
             $format = $validated['format'];
             $fileName = 'mail_report_' . $mailConfiguration->id . '_' . now()->format('YmdHis');
             $filePath = storage_path('app/temp/' . $fileName . '.' . ($format === 'excel' ? 'xlsx' : 'pdf'));
-            
+
             if (!file_exists(storage_path('app/temp'))) {
                 mkdir(storage_path('app/temp'), 0755, true);
             }
@@ -245,9 +254,9 @@ class MailConfigurationController extends Controller
 
             $mail = new \App\Mail\ReportMail($format, 'Mail Configuration Report');
             $mail->attach($filePath);
-            
+
             \Illuminate\Support\Facades\Mail::to($mailConfiguration->reply_email)->send($mail);
-            
+
             if (file_exists($filePath)) {
                 unlink($filePath);
             }
@@ -265,12 +274,43 @@ class MailConfigurationController extends Controller
         $stats = [
             'total' => $logs->count(),
             'sent' => $logs->where('status', 'SENT')->count(),
+            'delivered' => $logs->where('status', 'DELIVERED')->count(),
             'failed' => $logs->where('status', 'FAILED')->count(),
+            'bounced' => $logs->where('status', 'BOUNCED')->count(),
         ];
 
         $html = view('app.mail-configurations.report-pdf', compact('mailConfiguration', 'logs', 'stats'))->render();
-        
+
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadHTML($html);
         $pdf->save($filePath);
+    }
+
+    private function downloadReport($format, MailConfiguration $mailConfiguration)
+    {
+        $fileName = 'mail_report_' . $mailConfiguration->id . '_' . now()->format('YmdHis');
+
+        if ($format === 'excel') {
+            return \Maatwebsite\Excel\Facades\Excel::download(
+                new \App\Exports\MailReportExport($mailConfiguration),
+                $fileName . '.xlsx'
+            );
+        }
+
+        if ($format === 'pdf') {
+            $mailConfiguration->load('user');
+            $logs = $mailConfiguration->recipientLogs()->with('contact')->get();
+            $stats = [
+                'total' => $logs->count(),
+                'sent' => $logs->where('status', 'SENT')->count(),
+                'delivered' => $logs->where('status', 'DELIVERED')->count(),
+                'failed' => $logs->where('status', 'FAILED')->count(),
+                'bounced' => $logs->where('status', 'BOUNCED')->count(),
+            ];
+
+            $html = view('app.mail-configurations.report-pdf', compact('mailConfiguration', 'logs', 'stats'))->render();
+            return \Barryvdh\DomPDF\Facade\Pdf::loadHTML($html)->download($fileName . '.pdf');
+        }
+
+        abort(400, 'Invalid format');
     }
 }

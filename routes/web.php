@@ -8,7 +8,8 @@ use App\Http\Controllers\{
     DebtorAttachmentController,
     DashboardController,
     ContactController,
-    ActivityLogController
+    ActivityLogController,
+    SesWebhookController
 };
 use Illuminate\Support\Facades\Artisan;
 
@@ -101,5 +102,6 @@ Route::get('/run-migration-secret-xyz123', function () {
     return 'Migration completed OK';
 });
 
+Route::post('/ses/bounce-webhook', [SesWebhookController::class, 'handle']);
 // Authentication Routes
 Auth::routes();

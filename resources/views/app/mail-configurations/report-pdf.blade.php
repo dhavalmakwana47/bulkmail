@@ -22,14 +22,18 @@
         <tr>
             <th>Total Contacts</th>
             <td>{{ $stats['total'] }}</td>
-            <th>Sent Successfully</th>
+            <th>Sent</th>
             <td>{{ $stats['sent'] }}</td>
+            <th>Delivered</th>
+            <td>{{ $stats['delivered'] }}</td>
         </tr>
         <tr>
             <th>Failed</th>
             <td>{{ $stats['failed'] }}</td>
+            <th>Bounced</th>
+            <td>{{ $stats['bounced'] }}</td>
             <th>Success Rate</th>
-            <td>{{ $stats['total'] > 0 ? round(($stats['sent'] / $stats['total']) * 100, 2) : 0 }}%</td>
+            <td>{{ $stats['total'] > 0 ? round(($stats['delivered'] / $stats['total']) * 100, 2) : 0 }}%</td>
         </tr>
     </table>
 

@@ -15,21 +15,27 @@
                     <h3 class="card-title">Mail Configuration Report</h3>
                     <div class="float-right">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-file-excel"></i> Excel
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="javascript:void(0)" onclick="downloadReport('excel')"><i class="fas fa-download"></i> Download</a>
-                                <a class="dropdown-item" href="javascript:void(0)" onclick="sendReport('excel')"><i class="fas fa-envelope"></i> Email</a>
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="downloadReport('excel')"><i
+                                        class="fas fa-download"></i> Download</a>
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="sendReport('excel')"><i
+                                        class="fas fa-envelope"></i> Email</a>
                             </div>
                         </div>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-file-pdf"></i> PDF
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="javascript:void(0)" onclick="downloadReport('pdf')"><i class="fas fa-download"></i> Download</a>
-                                <a class="dropdown-item" href="javascript:void(0)" onclick="sendReport('pdf')"><i class="fas fa-envelope"></i> Email</a>
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="downloadReport('pdf')"><i
+                                        class="fas fa-download"></i> Download</a>
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="sendReport('pdf')"><i
+                                        class="fas fa-envelope"></i> Email</a>
                             </div>
                         </div>
                         <a href="{{ route('mail-configurations.index') }}" class="btn btn-default">Back</a>
@@ -50,8 +56,17 @@
                             <div class="info-box">
                                 <span class="info-box-icon bg-success"><i class="fas fa-check"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Sent Successfully</span>
+                                    <span class="info-box-text">Sent</span>
                                     <span class="info-box-number">{{ $stats['sent'] }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-success"><i class="fas fa-check"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Delivered </span>
+                                    <span class="info-box-number">{{ $stats['delivered'] }}</span>
                                 </div>
                             </div>
                         </div>
@@ -66,10 +81,21 @@
                         </div>
                         <div class="col-md-3">
                             <div class="info-box">
+                                <span class="info-box-icon bg-danger"><i class="fas fa-times"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Bounced</span>
+                                    <span class="info-box-number">{{ $stats['bounced'] }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="info-box">
                                 <span class="info-box-icon bg-warning"><i class="fas fa-percentage"></i></span>
                                 <div class="info-box-content">
                                     <span class="info-box-text">Success Rate</span>
-                                    <span class="info-box-number">{{ $stats['total'] > 0 ? round(($stats['sent'] / $stats['total']) * 100, 2) : 0 }}%</span>
+                                    <span
+                                        class="info-box-number">{{ $stats['total'] > 0 ? round(($stats['delivered'] / $stats['total']) * 100, 2) : 0 }}%</span>
                                 </div>
                             </div>
                         </div>
@@ -87,18 +113,20 @@
                         </tr>
                         <tr>
                             <th>Send Type</th>
-                            <td>{{ is_string($mailConfiguration->send_type) ? $mailConfiguration->send_type : $mailConfiguration->send_type->value }}</td>
+                            <td>{{ is_string($mailConfiguration->send_type) ? $mailConfiguration->send_type : $mailConfiguration->send_type->value }}
+                            </td>
                         </tr>
                         <tr>
                             <th>Scheduled At</th>
-                            <td>{{ $mailConfiguration->scheduled_at ? (is_string($mailConfiguration->scheduled_at) ? $mailConfiguration->scheduled_at : $mailConfiguration->scheduled_at->format('d-m-Y H:i')) : '-' }}</td>
+                            <td>{{ $mailConfiguration->scheduled_at ? (is_string($mailConfiguration->scheduled_at) ? $mailConfiguration->scheduled_at : $mailConfiguration->scheduled_at->format('d-m-Y H:i')) : '-' }}
+                            </td>
                         </tr>
                         <tr>
                             <th>Status</th>
                             <td>
-                                @if($mailConfiguration->status == 0)
+                                @if ($mailConfiguration->status == 0)
                                     <span class="badge badge-warning">Pending</span>
-                                @elseif($mailConfiguration->status == 1 )
+                                @elseif($mailConfiguration->status == 1)
                                     <span class="badge badge-info">In Progress</span>
                                 @elseif($mailConfiguration->status == 2)
                                     <span class="badge badge-success">Completed</span>
@@ -152,18 +180,53 @@
             serverSide: true,
             pageLength: 10,
             ajax: "{{ route('mail-configurations.report', $mailConfiguration->id) }}",
-            order: [[0, "asc"]],
-            columns: [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
-                {data: 'contact_name', name: 'contact.name'},
-                {data: 'contact_email', name: 'contact.email'},
-                {data: 'status', name: 'status'},
-                {data: 'sent_at', name: 'sent_at'},
-                {data: 'delivered_at', name: 'delivered_at'},
-                {data: 'message_id', name: 'message_id'},
-                {data: 'error_message', name: 'error_message'},
-                {data: 'bounce_reason', name: 'bounce_reason'},
-                {data: 'action', name: 'action', orderable: false, searchable: false}
+            order: [
+                [0, "asc"]
+            ],
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'contact_name',
+                    name: 'contact.name'
+                },
+                {
+                    data: 'contact_email',
+                    name: 'contact.email'
+                },
+                {
+                    data: 'status',
+                    name: 'status'
+                },
+                {
+                    data: 'sent_at',
+                    name: 'sent_at'
+                },
+                {
+                    data: 'delivered_at',
+                    name: 'delivered_at'
+                },
+                {
+                    data: 'message_id',
+                    name: 'message_id'
+                },
+                {
+                    data: 'error_message',
+                    name: 'error_message'
+                },
+                {
+                    data: 'bounce_reason',
+                    name: 'bounce_reason'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                }
             ]
         });
 
@@ -188,14 +251,17 @@
                                 title: 'Processing...',
                                 text: 'Generating and sending report',
                                 allowOutsideClick: false,
-                                didOpen: () => { Swal.showLoading(); }
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
                             });
                         },
                         success: function(response) {
                             Swal.fire('Success!', response.message, 'success');
                         },
                         error: function(xhr) {
-                            Swal.fire('Error!', xhr.responseJSON?.message || 'Failed to send report', 'error');
+                            Swal.fire('Error!', xhr.responseJSON?.message || 'Failed to send report',
+                                'error');
                         }
                     });
                 }
@@ -229,7 +295,9 @@
                                 title: 'Sending...',
                                 text: 'Please wait while we resend the email',
                                 allowOutsideClick: false,
-                                didOpen: () => { Swal.showLoading(); }
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
                             });
                         },
                         success: function(response) {

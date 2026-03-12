@@ -319,10 +319,16 @@ const statusCtx = document.getElementById('statusChart').getContext('2d');
 new Chart(statusCtx, {
     type: 'doughnut',
     data: {
-        labels: ['Delivered', 'Pending', 'Failed'],
+        labels: ['Delivered', 'Pending', 'Failed', 'Bounced'],
         datasets: [{
-            data: {!! json_encode($status_data ?? [70, 20, 10]) !!},
-            backgroundColor: ['#28a745', '#ffc107', '#dc3545']
+            data: {!! json_encode($status_data ?? [0, 0, 0, 0]) !!},
+            backgroundColor: [
+                '#22c55e', // Delivered - Green
+                '#f59e0b', // Pending - Amber
+                '#ef4444', // Failed - Red
+                '#6b7280'  // Bounced - Gray
+            ],
+            borderWidth: 1
         }]
     },
     options: {

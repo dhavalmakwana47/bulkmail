@@ -57,19 +57,26 @@ class DashboardController extends Controller
             $data['chart_data'] = $chartData;
             
             // Status distribution
+              $mailLogs = MailRecipientLog::whereHas('mailConfiguration', function($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
             $totalLogs = $mailLogs->count();
+            
             if ($totalLogs > 0) {
-                $delivered = $mailLogs->where('status', 'delivered')->count();
-                $pending = $mailLogs->where('status', 'pending')->count();
-                $failed = $mailLogs->where('status', 'failed')->count();
+                $delivered = $mailLogs->clone()->where('status', 'delivered')->count();
+                $pending = $mailLogs->clone()->where('status', 'pending')->count();
+                $failed = $mailLogs->clone()->where('status', 'failed')->count();
+                $bounced =  $mailLogs->clone()->where('status', 'bounced')->count();
+               
                 
                 $data['status_data'] = [
                     round(($delivered / $totalLogs) * 100),
                     round(($pending / $totalLogs) * 100),
-                    round(($failed / $totalLogs) * 100)
+                    round(($failed / $totalLogs) * 100),
+                    round(($bounced / $totalLogs) * 100)
                 ];
             } else {
-                $data['status_data'] = [0, 0, 0];
+                $data['status_data'] = [0, 0, 0, 0];
             }
             
             // Storage calculation (count of attachments)
