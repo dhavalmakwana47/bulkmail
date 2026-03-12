@@ -14,8 +14,24 @@
                 <div class="card-header">
                     <h3 class="card-title">Mail Configuration Report</h3>
                     <div class="float-right">
-                        <button onclick="sendReport('excel')" class="btn btn-success"><i class="fas fa-file-excel"></i> Email Excel</button>
-                        <button onclick="sendReport('pdf')" class="btn btn-danger"><i class="fas fa-file-pdf"></i> Email PDF</button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-file-excel"></i> Excel
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="downloadReport('excel')"><i class="fas fa-download"></i> Download</a>
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="sendReport('excel')"><i class="fas fa-envelope"></i> Email</a>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-file-pdf"></i> PDF
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="downloadReport('pdf')"><i class="fas fa-download"></i> Download</a>
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="sendReport('pdf')"><i class="fas fa-envelope"></i> Email</a>
+                            </div>
+                        </div>
                         <a href="{{ route('mail-configurations.index') }}" class="btn btn-default">Back</a>
                     </div>
                 </div>
@@ -82,8 +98,9 @@
                             <td>
                                 @if($mailConfiguration->status == 0)
                                     <span class="badge badge-warning">Pending</span>
+                                @elseif($mailConfiguration->status == 1 )
+                                    <span class="badge badge-info">In Progress</span>
                                 @elseif($mailConfiguration->status == 2)
-                            
                                     <span class="badge badge-success">Completed</span>
                                 @endif
                             </td>
@@ -117,6 +134,19 @@
 @section('footer-script')
     <script src="{{ asset('customdownload/js/jquery.dataTables.min.js') }}"></script>
     <script>
+        // Dropdown toggle functionality
+        $('.dropdown-toggle').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $(this).next('.dropdown-menu').toggle();
+        });
+
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.btn-group').length) {
+                $('.dropdown-menu').hide();
+            }
+        });
+
         $('#recipient_logs').DataTable({
             processing: true,
             serverSide: true,
@@ -170,6 +200,10 @@
                     });
                 }
             });
+        }
+
+        function downloadReport(format) {
+            window.location.href = "{{ route('mail-configurations.report', $mailConfiguration->id) }}?download=" + format;
         }
 
         function resendMail(logId) {

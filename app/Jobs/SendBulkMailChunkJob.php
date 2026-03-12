@@ -53,7 +53,7 @@ class SendBulkMailChunkJob implements ShouldQueue
             'total_failed' => $result['total_failed'],
         ]);
 
-        if ($this->isLastChunk && $this->batch()?->finished()) {
+        if ($this->isLastChunk ) {
             $this->finalizeBulkMail($mailConfig);
         }
     }

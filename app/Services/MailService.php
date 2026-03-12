@@ -30,7 +30,12 @@ class MailService
         $jobs = [];
 
         foreach ($chunks as $index => $chunk) {
-            $isLastChunk = ($index === $chunks->count() - 1);
+            $isLastChunk = ($index == $chunks->count() - 1);
+            Log::info('Creating job for chunk', [
+                'chunk_index' => $index,
+                'chunk_size' => count($chunk),
+                'is_last_chunk' => $isLastChunk,
+            ]);
             $jobs[] = new SendBulkMailChunkJob($mailConfig->id, $chunk->toArray(), $isLastChunk);
         }
 
@@ -145,9 +150,9 @@ class MailService
         $body = str_replace('{{attribute_3}}', $attributes['attribute_3'] ?? '', $body);
         $body = str_replace('{{attribute_4}}', $attributes['attribute_4'] ?? '', $body);
 
-        if (strpos($body, '{{attachment_list}}') !== false) {
+        if (strpos($body, '{{attachment_list}}') !== false || strpos($body, '{{ attachment_list }}') !== false) {
             $attachmentTable = $this->generateAttachmentTable($attachments);
-            $body = str_replace('{{attachment_list}}', $attachmentTable, $body);
+            $body = str_replace(['{{attachment_list}}', '{{ attachment_list }}'], $attachmentTable, $body);
         }
 
         return $body;
