@@ -110,11 +110,11 @@
                                     <td>{{ $campaign->subject }}</td>
                                     <td><span class="badge badge-info">{{ $campaign->recipients_count }}</span></td>
                                     <td>
-                                        @if($campaign->status == 'sent' || $campaign->status == 1)
+                                        @if($campaign->status == 'sent' || $campaign->status == 2)
                                             <span class="badge badge-success">Completed</span>
                                         @elseif($campaign->status == 'draft' || $campaign->status == 0)
                                             <span class="badge badge-secondary">Draft</span>
-                                        @elseif($campaign->status == 'processing')
+                                        @elseif($campaign->status == 'processing' || $campaign->status == 1)
                                             <span class="badge badge-warning">Processing</span>
                                         @else
                                             <span class="badge badge-info">Pending</span>
