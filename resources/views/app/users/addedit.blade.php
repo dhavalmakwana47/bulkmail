@@ -109,6 +109,26 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>SES Verified Email</label>
+                                    <select name="ses_email_id" class="form-control">
+                                        <option value="">-- None --</option>
+                                        @foreach($sesVerifiedEmails as $sesEmail)
+                                            <option value="{{ $sesEmail->id }}"
+                                                {{ old('ses_email_id', $user->ses_email_id ?? '') == $sesEmail->id ? 'selected' : '' }}>
+                                                {{ $sesEmail->email }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('ses_email_id')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">

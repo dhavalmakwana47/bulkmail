@@ -25,7 +25,8 @@ class User extends Authenticatable
         'phone',
         'is_active',
         'type',
-        'duplicate_email'
+        'duplicate_email',
+        'ses_email_id',
     ];
 
     /**
@@ -47,4 +48,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function sesVerifiedEmail()
+    {
+        return $this->belongsTo(SesVerifiedEmail::class, 'ses_email_id');
+    }
 }

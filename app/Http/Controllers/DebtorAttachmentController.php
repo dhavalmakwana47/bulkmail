@@ -49,7 +49,7 @@ class DebtorAttachmentController extends Controller
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
             'name' => 'required|string|max:255',
-            'file' => 'required|file|max:10240',
+            'file' => 'required|file|max:51200',
         ]);
         
         if (auth()->user()->type == '1') {

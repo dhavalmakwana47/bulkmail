@@ -41,6 +41,15 @@
       </a>
     </li>
 
+    @if(permissionCheck())
+    <li class="nav-item">
+      <a href="{{ route('ses-verified-emails.index') }}" class="nav-link {{ Request::routeIs('ses-verified-emails.*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-envelope-open-text"></i>
+        <p>SES Verified Emails</p>
+      </a>
+    </li>
+    @endif
+
     <li class="nav-header">SYSTEM</li>
 
     <li class="nav-item">

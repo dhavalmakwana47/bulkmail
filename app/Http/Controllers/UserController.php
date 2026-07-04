@@ -6,6 +6,7 @@ use App\Http\Requests\CorporateDebtorRequest;
 use App\Mail\VoterEmail;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\SesVerifiedEmail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -55,7 +56,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('app.users.addedit');
+        $sesVerifiedEmails = SesVerifiedEmail::active()->get();
+        return view('app.users.addedit', compact('sesVerifiedEmails'));
     }
 
     /**
@@ -70,6 +72,7 @@ class UserController extends Controller
             'type' => $request->type,
             'is_active' => isset($request->is_active) ? 1 : 0,
             'duplicate_email' => isset($request->duplicate_email) ? 1 : 0,
+            'ses_email_id' => $request->ses_email_id ?: null,
         ]);
 
         return redirect()->route('corporate-debtors.index')->with('status', 'Corporate Debtor created successfully');
@@ -90,10 +93,8 @@ class UserController extends Controller
     {
         $user = User::findorfail($id);
         if ($user->type != 0) {
-            $data = [];
-            $data['user'] = $user;
-
-            return view('app.users.addedit', $data);
+            $sesVerifiedEmails = SesVerifiedEmail::active()->get();
+            return view('app.users.addedit', compact('user', 'sesVerifiedEmails'));
         } else {
             return redirect()->route('corporate-debtors.index');
         }
@@ -110,6 +111,7 @@ class UserController extends Controller
             'type' => $request->type,
             'is_active' => isset($request->is_active) ? 1 : 0,
             'duplicate_email' => isset($request->duplicate_email) ? 1 : 0,
+            'ses_email_id' => $request->ses_email_id ?: null,
         ];
 
         if (!empty($request->password)) {

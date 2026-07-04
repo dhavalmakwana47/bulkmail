@@ -16,6 +16,7 @@ class CorporateDebtorRequest extends FormRequest
         $rules = [
             'name' => 'required|string|max:255',
             'type' => 'required|in:0,1,2',
+            'ses_email_id' => 'nullable|exists:ses_verified_emails,id',
         ];
 
         if ($this->isMethod('post')) {

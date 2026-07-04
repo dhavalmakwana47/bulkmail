@@ -67,6 +67,16 @@ class MailService
 
         $this->configureSes($sesConnection);
 
+        // Resolve from email: use corporate debtor's SES verified email if set, else SES connection default
+        $fromEmail = $sesConnection->from_email;
+        $debtor = $mailConfig->user;
+        if ($debtor && $debtor->ses_email_id) {
+            $sesVerifiedEmail = $debtor->sesVerifiedEmail;
+            if ($sesVerifiedEmail && $sesVerifiedEmail->active_status === 'Y') {
+                $fromEmail = $sesVerifiedEmail->email;
+            }
+        }
+
         $contacts = Contact::whereIn('id', $contactIds)->get();
         $attachments = $mailConfig->configurationAttachments()->with('debtorAttachment')->get();
 
@@ -84,8 +94,8 @@ class MailService
                 $body = $this->replaceTagsInBody($mailConfig->body, $contact, $attachments);
                 $body = $this->appendUnsubscribeFooter($body, $contact);
 
-                $sentMessage = Mail::html($body, function ($message) use ($mailConfig, $contact, $sesConnection) {
-                    $message->from($sesConnection->from_email, $mailConfig->from_name)
+                $sentMessage = Mail::html($body, function ($message) use ($mailConfig, $contact, $sesConnection, $fromEmail) {
+                    $message->from($fromEmail, $mailConfig->from_name)
                         ->replyTo($mailConfig->reply_email)
                         ->to($contact->email, $contact->name)
                         ->subject($mailConfig->subject);
@@ -216,13 +226,23 @@ class MailService
             throw new \Exception('Cannot send email to unsubscribed contact');
         }
 
+        // Resolve from email: use corporate debtor's SES verified email if set, else SES connection default
+        $fromEmail = $sesConnection->from_email;
+        $debtor = $mailConfig->user;
+        if ($debtor && $debtor->ses_email_id) {
+            $sesVerifiedEmail = $debtor->sesVerifiedEmail;
+            if ($sesVerifiedEmail && $sesVerifiedEmail->active_status === 'Y') {
+                $fromEmail = $sesVerifiedEmail->email;
+            }
+        }
+
         $attachments = $mailConfig->configurationAttachments()->with('debtorAttachment')->get();
 
         $body = $this->replaceTagsInBody($mailConfig->body, $contact, $attachments);
         $body = $this->appendUnsubscribeFooter($body, $contact);
 
-        $sentMessage = Mail::html($body, function ($message) use ($mailConfig, $contact, $sesConnection) {
-            $message->from($sesConnection->from_email, $mailConfig->from_name)
+        $sentMessage = Mail::html($body, function ($message) use ($mailConfig, $contact, $sesConnection, $fromEmail) {
+            $message->from($fromEmail, $mailConfig->from_name)
                 ->replyTo($mailConfig->reply_email)
                 ->to($contact->email, $contact->name)
                 ->subject($mailConfig->subject);

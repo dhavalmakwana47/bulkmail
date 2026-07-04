@@ -9,7 +9,8 @@ use App\Http\Controllers\{
     DashboardController,
     ContactController,
     ActivityLogController,
-    SesWebhookController
+    SesWebhookController,
+    SesVerifiedEmailController
 };
 use Illuminate\Support\Facades\Artisan;
 
@@ -68,6 +69,9 @@ Route::middleware(['auth', 'userstatus'])->group(function () {
         // Debtor Attachments
         Route::resource('debtor-attachments', DebtorAttachmentController::class);
         Route::get('debtor-attachments-by-debtor', [DebtorAttachmentController::class, 'getByDebtor'])->name('debtor-attachments.by-debtor');
+
+        // SES Verified Emails
+        Route::resource('ses-verified-emails', SesVerifiedEmailController::class);
 
         // Activity Logs
         Route::get('activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
